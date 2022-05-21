@@ -268,7 +268,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 765653868}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -812,7 +812,7 @@ GameObject:
   - component: {fileID: 947828199}
   - component: {fileID: 947828198}
   - component: {fileID: 947828197}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spirit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1407,6 +1407,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 765653868}
     m_Modifications:
+    - target: {fileID: 100000, guid: e9485135f63f8824c8c80bd0268b54fb, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: e9485135f63f8824c8c80bd0268b54fb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

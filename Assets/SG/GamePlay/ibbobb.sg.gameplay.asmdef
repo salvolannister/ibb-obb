@@ -1,3 +1,14 @@
-﻿{
-	"name": "ibbobb.sg.gameplay"
+{
+    "name": "ibbobb.sg.gameplay",
+    "references": [
+        "ibbobb.sg.utils"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
 }

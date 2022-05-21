@@ -118,6 +118,25 @@ public class ScreenBounds : Manager<ScreenBounds>
         return (maxDist > 0.5f);
     }
 
+    static public Vector3 CloserToBound(Vector3 first, Vector3 second)
+    {
+        Vector3 locPosFirst = Get().transform.InverseTransformPoint(first);
+        Vector3 locPosSecond = Get().transform.InverseTransformPoint(second);
+
+        // Find in which dimension the locPos is furthest from the origin
+        float maxDist = Mathf.Max(Mathf.Abs(locPosFirst.x), Mathf.Abs(locPosFirst.y));
+        float maxDist2 = Mathf.Max(Mathf.Abs(locPosSecond.x), Mathf.Abs(locPosSecond.y));
+        
+        if(maxDist > maxDist2)
+        {
+            return first;
+        }
+        else
+        {
+            return second;
+        }
+       
+    }
 
     static public int OOB_X(Vector3 worldPos)
     {

@@ -21,7 +21,7 @@ public class CameraController : MonoBehaviour
     {
         Assert.IsNotNull(target, " Set the first target for the cameraCameraController");
         Assert.IsNotNull(targetTwo, " Set the second target for the cameraController");
-      
+
     }
     void Start()
     {
@@ -33,14 +33,10 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         // TODO: include also the second target in those calculation
-        if (targetTwoTrs.position.x > targetOneTrs.position.x)
-        {
-            targetTrs = targetTwoTrs;
-        }
-        else
-        {
-            targetTrs = targetOneTrs;
-        }
+
+        targetTrs = ChooseTargetToFollow(targetOneTrs, targetTwoTrs);
+
+
         Vector3 oldPos = transform.position;
         Vector3 targetpos = new Vector3(targetTrs.position.x, targetTrs.position.y + posY, -10);
         transform.position = Vector3.Lerp(transform.position, targetpos, Time.deltaTime * smoothvalue);
@@ -51,6 +47,20 @@ public class CameraController : MonoBehaviour
         }
 
 
+    }
+
+    private Transform ChooseTargetToFollow(Transform tOne, Transform tTwo)
+    {
+
+        //TODO: in the game the target choosen is the one that pressed the key the last
+        if(tOne.position.x > tTwo.position.x)
+        {
+            return tOne;
+        }
+        else
+        {
+            return tTwo;
+        }
     }
 
     private bool IsPositionValid()

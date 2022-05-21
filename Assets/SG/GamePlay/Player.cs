@@ -31,11 +31,46 @@ public class Player : MonoBehaviour
     private Animator animator;
     private Collider coll;
     private bool isJumping = false;
+    private Coroutine co;
+    private bool reversed = false;
+    public float gravityChangeDelay = 0.05f;
+    public void ReverseGravity()
+    {
+
+        if(co == null) { Debug.LogWarning(" co is null"); }
+
+        co = StartCoroutine(_ReverseGravity());
+
+
+
+
+    }
+
+    private IEnumerator _ReverseGravity()
+    {
+        reversed = !reversed;
+        int gravityDir = reversed ? 1 : -1;
+        if (rb.velocity.x > 0)
+        { // Moving Right
+            transform.rotation = Quaternion.LookRotation(
+                (reversed) ? new Vector3(0, 0, -1.0f) : new Vector3(0, 0, 1.0f), -Vector3.up *gravityDir);
+        }
+        else if (rb.velocity.x < 0)
+        { // Moving Left
+            transform.rotation = Quaternion.LookRotation(
+                (reversed) ? new Vector3(0, 0, 1.0f) : new Vector3(0, 0, -1.0f), -Vector3.up * gravityDir);
+        }
+
+        yield return new WaitForSeconds(gravityChangeDelay);
+        gravity *= -1;
+    }
+
     private Vector3 vectorVelocity;
     public PlayerType type;
     public float jumpForce = 5f;
     public int floorLayer;
     public int playerLayer;
+    public int enemyLayer;
     void Awake()
     {
 
@@ -43,8 +78,11 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        co = null;
         floorLayer = LayerMask.NameToLayer("Floor");
         playerLayer = LayerMask.NameToLayer("Player");
+        enemyLayer = LayerMask.NameToLayer("Enemy");
+
         coll = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
@@ -57,14 +95,11 @@ public class Player : MonoBehaviour
         int run = 0;
         if (Input.GetKey(leftShiftKey))
         {
-            Debug.Log("Getting velocity left");
             Translate(Vector3.left);
             run = 1;
-
         }
         else if (Input.GetKey(rightShiftKey))
         {
-            Debug.Log("Getting velocity right");
             Translate(Vector3.right);
             run = 1;
         }
@@ -76,7 +111,6 @@ public class Player : MonoBehaviour
             Jump();
         }
 
-        //set is jumping to false
     }
 
     private void FixedUpdate()
@@ -87,7 +121,8 @@ public class Player : MonoBehaviour
     void OnCollisionEnter(Collision coll)
     {
         Debug.Log($"coll wiht {coll.gameObject.name}, layer = {coll.gameObject.layer}  and {floorLayer}");
-        if (coll.gameObject.layer == floorLayer || coll.gameObject.layer == playerLayer) //TOOD: use bit ?? how ?
+        int goLayer = coll.gameObject.layer;
+        if (goLayer == floorLayer || goLayer == playerLayer || goLayer == enemyLayer) //TOOD: use bit ?? how ?
         {
             if (isJumping)
             {

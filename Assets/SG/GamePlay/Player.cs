@@ -11,7 +11,7 @@ public enum PlayerType
 }
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(BoxCollider))]
-[RequireComponent(typeof (Animator))]
+[RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour
 {
     [Header("Set in inspector")]
@@ -27,14 +27,15 @@ public class Player : MonoBehaviour
     [SerializeField]
     protected float moveSpeed = 0.5f;
 
-    private CapsuleCollider collider;
-    private Rigidbody rb;  
+    private Rigidbody rb;
     private Animator animator;
-
+    private Collider coll;
     private bool isJumping = false;
     private Vector3 vectorVelocity;
     public PlayerType type;
-
+    public float jumpForce = 5f;
+    public int floorLayer;
+    public int playerLayer;
     void Awake()
     {
 
@@ -42,10 +43,12 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        collider = GetComponent<CapsuleCollider>();
+        floorLayer = LayerMask.NameToLayer("Floor");
+        playerLayer = LayerMask.NameToLayer("Player");
+        coll = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
-       
+
     }
 
     void Update()
@@ -57,7 +60,7 @@ public class Player : MonoBehaviour
             Debug.Log("Getting velocity left");
             Translate(Vector3.left);
             run = 1;
-            
+
         }
         else if (Input.GetKey(rightShiftKey))
         {
@@ -68,7 +71,7 @@ public class Player : MonoBehaviour
 
         animator.SetInteger("Run", run);
 
-        if(Input.GetKeyDown(jumpKey) && !isJumping)
+        if (Input.GetKeyDown(jumpKey) && !isJumping)
         {
             Jump();
         }
@@ -76,24 +79,37 @@ public class Player : MonoBehaviour
         //set is jumping to false
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         rb.AddForce(gravity * Vector3.up);
     }
 
+    void OnCollisionEnter(Collision coll)
+    {
+        Debug.Log($"coll wiht {coll.gameObject.name}, layer = {coll.gameObject.layer}  and {floorLayer}");
+        if (coll.gameObject.layer == floorLayer || coll.gameObject.layer == playerLayer) //TOOD: use bit ?? how ?
+        {
+            if (isJumping)
+            {
+                isJumping = false;
+            }
+
+        }
+    }
     private void Jump()
     {
         isJumping = true;
-        vectorVelocity.y = gravity * Time.deltaTime;
-        rb.AddForce(vectorVelocity);
         animator.Play("Jump");
+        rb.velocity = Vector3.zero;
+        rb.AddForce(Vector3.up * jumpForce * -gravity, ForceMode.Impulse);
+
     }
 
     private void Translate(Vector3 direction)
     {
         //if (Time.realtimeSinceStartup - timeRead > (yMov < 0 ? fallTime / 10 : fallTime))
         transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
-        transform.transform.Translate(direction * moveSpeed * Time.deltaTime,0);
+        transform.transform.Translate(direction * moveSpeed * Time.deltaTime, 0);
     }
 
     public void ChangeGravity()

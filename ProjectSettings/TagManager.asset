@@ -7,6 +7,8 @@ TagManager:
   - Red
   - Green
   - White
+  - Crawler
+  - Spirit
   layers:
   - Default
   - TransparentFX

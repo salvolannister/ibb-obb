@@ -60,7 +60,6 @@ public class CameraController : MonoBehaviour
 
         if (!IsPositionValid())
         {
-            Debug.Log(" Position is invalid");
             transform.position = oldPos;
         }
 

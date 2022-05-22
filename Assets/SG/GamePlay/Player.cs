@@ -31,20 +31,14 @@ public class Player : MonoBehaviour
     private Rigidbody rb;
     private Animator animator;
     private bool isJumping = false;
-    private Coroutine co;
+    private Coroutine co = null;
     private bool reversed = false;
     private Vector3 lastDir = Vector3.zero;
     public float gravityChangeDelay = 0.05f;
     public PlayerType playerType;
     public void ReverseGravity()
     {
-
-        if (co == null) { Debug.LogWarning(" co is null"); }
-
         co = StartCoroutine(_ReverseGravity());
-
-
-
 
     }
 
@@ -56,6 +50,7 @@ public class Player : MonoBehaviour
 
         yield return new WaitForSeconds(gravityChangeDelay);
         gravity *= -1;
+        co = null;
     }
 
     private void RotatePlayer()
@@ -124,7 +119,7 @@ public class Player : MonoBehaviour
 
     void OnCollisionEnter(Collision coll)
     {
-        Debug.Log($"coll wiht {coll.gameObject.name}, layer = {coll.gameObject.layer}  and {floorLayer}");
+        Debug.Log($"collision wiht {coll.gameObject.name}, layer = {coll.gameObject.layer}  and {floorLayer}");
         int goLayer = coll.gameObject.layer;
         if (goLayer == floorLayer || goLayer == playerLayer || goLayer == enemyLayer) //TOOD: use bit ?? how ?
         {
@@ -139,6 +134,7 @@ public class Player : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         int goLayer = other.gameObject.layer;
+        Debug.Log($"collider wiht {other.gameObject.name}, layer = {other.gameObject.layer}  and enemy layer {enemyLayer}");
         if (goLayer == enemyLayer)
         {
             InteractWithEnemy(other.gameObject);
@@ -147,12 +143,13 @@ public class Player : MonoBehaviour
 
     private void InteractWithEnemy(GameObject enemyGO)
     {
-
+        Debug.Log("Interact with enemy ");
         Enemy enemy = enemyGO.GetComponent<Enemy>();
         switch (enemyGO.tag)
         {
             case EnemyParts.Spirit:
                 {
+                    Debug.Log(" enemy was spirit");
                     enemy.Die();
                     break;
                 }

@@ -14,11 +14,9 @@ public class Portal : MonoBehaviour
 {
     [Header("Dynamically Set")]
     private int playerLayer;
-    private string tag;
     // Start is called before the first frame update
     void Start()
     {
-        tag = gameObject.tag;
         playerLayer = LayerMask.NameToLayer("Player");
     }
 

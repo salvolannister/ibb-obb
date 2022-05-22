@@ -116,7 +116,6 @@ public class Player : MonoBehaviour
 
     void OnCollisionEnter(Collision coll)
     {
-        Debug.Log($"collision wiht {coll.gameObject.name}, layer = {coll.gameObject.layer}  and {floorLayer}");
         int goLayer = coll.gameObject.layer;
         if (goLayer == floorLayer || goLayer == playerLayer || goLayer == enemyLayer) //TOOD: use bit ?? how ?
         {
@@ -148,7 +147,6 @@ public class Player : MonoBehaviour
             {
                 case EnemyParts.Spirit:
                     {
-                        Debug.Log(" enemy was spirit");
                         enemy.Die();
                         break;
                     }
@@ -172,6 +170,8 @@ public class Player : MonoBehaviour
     {
         // Make Explosion Effect
         // once finished
+        if (co != null)
+            StopCoroutine(co);
         callback?.Invoke();
         gameObject.SetActive(false);
 
@@ -190,15 +190,20 @@ public class Player : MonoBehaviour
     {
         transform.position = trs.position;
         gameObject.SetActive(true);
-        float gravityDelay = gravityChangeDelay;
-        gravityChangeDelay = 0;
-
-        if ((trs.position.y < 0 && !reversed) || (trs.position.y > 0 && reversed))
+    
+        if ((trs.position.y < 0 ))
         {
-            ReverseGravity();
+            reversed = true;
+            if (gravity < 0)
+                gravity *= -1;
+
+        }else
+        {
+            reversed = false;
+            if (gravity > 0)
+                gravity *= -1;
         }
 
-        gravityChangeDelay = gravityDelay;
     }
     private void Translate(Vector3 direction)
     {

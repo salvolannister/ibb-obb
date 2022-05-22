@@ -111,7 +111,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.AddForce(gravity * Vector3.up);
+        rb.AddForce(gravity * Vector3.up, ForceMode.Force);
     }
 
     void OnCollisionEnter(Collision coll)
@@ -218,8 +218,4 @@ public class Player : MonoBehaviour
         RotatePlayer();
     }
 
-    public void ChangeGravity()
-    {
-        gravity = -gravity;
-    }
 }

@@ -60,7 +60,7 @@ public class CameraController : MonoBehaviour
 
         if (!IsPositionValid())
         {
-            transform.position = oldPos;
+            transform.position = Vector3.Lerp(transform.position, oldPos, Time.deltaTime * smoothvalue);
         }
 
 

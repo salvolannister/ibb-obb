@@ -9,6 +9,7 @@ public enum PlayerType
     obb = 0, //Color.red,
     ibb = 1 //Color.green,
 }
+
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(Animator))]
@@ -29,16 +30,16 @@ public class Player : MonoBehaviour
 
     private Rigidbody rb;
     private Animator animator;
-    private Collider coll;
     private bool isJumping = false;
     private Coroutine co;
     private bool reversed = false;
     private Vector3 lastDir = Vector3.zero;
     public float gravityChangeDelay = 0.05f;
+    public PlayerType playerType;
     public void ReverseGravity()
     {
 
-        if(co == null) { Debug.LogWarning(" co is null"); }
+        if (co == null) { Debug.LogWarning(" co is null"); }
 
         co = StartCoroutine(_ReverseGravity());
 
@@ -50,8 +51,8 @@ public class Player : MonoBehaviour
     private IEnumerator _ReverseGravity()
     {
         reversed = !reversed;
-       
-       // RotatePlayer();
+
+        // RotatePlayer();
 
         yield return new WaitForSeconds(gravityChangeDelay);
         gravity *= -1;
@@ -72,8 +73,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    private Vector3 vectorVelocity;
-    public PlayerType type;
     public float jumpForce = 5f;
     public int floorLayer;
     public int playerLayer;
@@ -90,7 +89,6 @@ public class Player : MonoBehaviour
         playerLayer = LayerMask.NameToLayer("Player");
         enemyLayer = LayerMask.NameToLayer("Enemy");
 
-        coll = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
 
@@ -98,7 +96,6 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        vectorVelocity = Vector3.zero;
         int run = 0;
         if (Input.GetKey(leftShiftKey))
         {
@@ -138,6 +135,46 @@ public class Player : MonoBehaviour
 
         }
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        int goLayer = other.gameObject.layer;
+        if (goLayer == enemyLayer)
+        {
+            InteractWithEnemy(other.gameObject);
+        }
+    }
+
+    private void InteractWithEnemy(GameObject enemyGO)
+    {
+
+        Enemy enemy = enemyGO.GetComponent<Enemy>();
+        switch (enemyGO.tag)
+        {
+            case EnemyParts.Spirit:
+                {
+                    enemy.Die();
+                    break;
+                }
+            case EnemyParts.Crawler:
+                {
+                    GameManager.GameOver(this.tag);
+                    break;
+                }
+
+
+        }
+    }
+
+    public void Die(Action callback = null)
+    {
+        // Make Explosion Effect
+        // once finished
+        callback?.Invoke();
+        gameObject.SetActive(false);
+
+    }
+
     private void Jump()
     {
         isJumping = true;
@@ -152,7 +189,6 @@ public class Player : MonoBehaviour
         //if (Time.realtimeSinceStartup - timeRead > (yMov < 0 ? fallTime / 10 : fallTime))
         lastDir = direction;
         transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
-       // RotatePlayer();
         transform.transform.Translate(direction * moveSpeed * Time.deltaTime, 0);
     }
 
@@ -160,7 +196,7 @@ public class Player : MonoBehaviour
     {
         RotatePlayer();
     }
-   
+
     public void ChangeGravity()
     {
         gravity = -gravity;

@@ -91,7 +91,7 @@ public class Enemy : MonoBehaviour
         gameObject.SetActive(false);
         // Die effect
         // spawn box 
-
+        
     }
 
     internal void Respawn()

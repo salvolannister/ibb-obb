@@ -111,7 +111,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.AddForce(gravity * Vector3.up, ForceMode.Force);
+        rb.AddForce(gravity * Vector3.up, ForceMode.Acceleration);
     }
 
     void OnCollisionEnter(Collision coll)

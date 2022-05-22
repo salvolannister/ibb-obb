@@ -226,7 +226,7 @@ MonoBehaviour:
   rightShiftKey: 275
   gravity: -9.8
   moveSpeed: 2
-  gravityChangeDelay: 2
+  gravityChangeDelay: 1
   type: 1
   jumpForce: 3
   floorLayer: 0
@@ -1565,7 +1565,7 @@ MonoBehaviour:
   rightShiftKey: 100
   gravity: -9.8
   moveSpeed: 2
-  gravityChangeDelay: 2
+  gravityChangeDelay: 1
   type: 0
   jumpForce: 3
   floorLayer: 0

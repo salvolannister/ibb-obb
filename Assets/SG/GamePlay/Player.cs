@@ -193,7 +193,7 @@ public class Player : MonoBehaviour
         float gravityDelay = gravityChangeDelay;
         gravityChangeDelay = 0;
 
-        if((trs.position.y < 0 && !reversed) || ( trs.position.y>0 && reversed))
+        if ((trs.position.y < 0 && !reversed) || (trs.position.y > 0 && reversed))
         {
             ReverseGravity();
         }

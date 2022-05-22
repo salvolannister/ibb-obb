@@ -62,15 +62,14 @@ public class Enemy : MonoBehaviour
         {
             destination = UpdateDestination();
         }
-        Debug.Log($" Distance is {distance}");
         m_trs.position = Vector3.Lerp(m_trs.position, destination, 0.1f *Time.deltaTime * velocity);
     }
 
 
-    void OnDrawGizmos()
-    {
-        Gizmos.DrawSphere(destination, 0.3f);
-    }
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawSphere(destination, 0.3f);
+    //}
     private Vector3 UpdateDestination()
     {
         return destination == checkPoints[0].position ? checkPoints[1].position : checkPoints[0].position;

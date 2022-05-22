@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2526622875999951717}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Pos2
   m_TagString: Untagged
   m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2292609835122402615}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Pos1
   m_TagString: Untagged
   m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
@@ -54,7 +54,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3636260273031271376}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.6, y: 0.04, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5293426229776286081}
@@ -70,7 +70,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5293426229776286081}
   - component: {fileID: 7667503521423109868}
-  m_Layer: 0
+  - component: {fileID: 1173461793}
+  m_Layer: 12
   m_Name: CheckPoint
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -104,5 +105,18 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.6871357, y: 0.70224476, z: 1}
-  m_Center: {x: 0.80226994, y: 0.14887762, z: 0}
+  m_Size: {x: 0.6871357, y: 7.7594805, z: 1}
+  m_Center: {x: 0.80226994, y: 0.0231421, z: 0}
+--- !u!114 &1173461793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4612696794141239106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bb7a8813a5c3354db48c21c8249b248, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isChecked: 0

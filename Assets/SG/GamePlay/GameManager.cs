@@ -7,22 +7,23 @@ using UnityEngine.Assertions;
 public class GameManager : Manager<GameManager>
 {
     [Header("Set in inspector")]
-    public Transform[] checkPoints;
     public Player[] players = new Player[2];
 
-    private int checkPointReached = 0;
     private List<Enemy> deadEnemyList = new List<Enemy>();
-
+    [Header("Set Dynamically")]
+    public Transform[] checkPoints;
     void Start()
     {
+        checkPoints = new Transform[2];
+
         Assert.IsNotNull(players[1], "Second Player not set in the editor");
         Assert.IsNotNull(players[0], "First p not set in the editor");
-        Assert.IsNotNull(checkPoints, "You didn't set any check point");
     }
 
-    public static void CheckPointReached()
+    public static void CheckPointReached(Transform pos1, Transform pos2)
     {
-        Get().checkPointReached++;
+        Get().checkPoints[0] = pos1;
+        Get().checkPoints[1] = pos2;
         Get().deadEnemyList.Clear();
     }
 
@@ -33,6 +34,7 @@ public class GameManager : Manager<GameManager>
 
     public static void GameOver(string deadTag)
     {
+        Debug.Log("Game Over");
         GameManager M = Get();
         Player playerOne = M.players[0];
         Player playerTwo = M.players[1];
@@ -44,7 +46,7 @@ public class GameManager : Manager<GameManager>
         // reactivate enemies
         foreach (Enemy enemy in M.deadEnemyList)
         {
-            if (enemy.IsAlive)
+            if (!enemy.IsAlive)
             {
                 enemy.gameObject.SetActive(true);
                 enemy.Respawn();
@@ -54,17 +56,16 @@ public class GameManager : Manager<GameManager>
         M.deadEnemyList.Clear();
         
         // respawn players! 
-        int cpStartIndex = M.checkPointReached - 1;
-        if (cpStartIndex >= 0 && cpStartIndex + 1 < M.checkPoints.Length)
+       
+        if (M.checkPoints != null && M.checkPoints.Length == 2)
         {
-            playerOne.gameObject.transform.position = M.checkPoints[cpStartIndex].position;
-            playerOne.gameObject.SetActive(true);
-            playerTwo.gameObject.transform.position = M.checkPoints[cpStartIndex + 1].position;
-            playerTwo.gameObject.SetActive(true);
+            playerOne.Respawn(M.checkPoints[0]);
+            playerTwo.Respawn(M.checkPoints[1]);
+  
         }
         else
         {
-            Debug.LogError($" checkpoint index is wrong i:{cpStartIndex}");
+            Debug.LogError($" checkpoint index is wrong i:{M.checkPoints.Length}");
         }
 
     }

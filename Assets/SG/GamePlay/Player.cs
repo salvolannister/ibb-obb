@@ -45,9 +45,6 @@ public class Player : MonoBehaviour
     private IEnumerator _ReverseGravity()
     {
         reversed = !reversed;
-
-        // RotatePlayer();
-
         yield return new WaitForSeconds(gravityChangeDelay);
         gravity *= -1;
         co = null;
@@ -143,23 +140,31 @@ public class Player : MonoBehaviour
 
     private void InteractWithEnemy(GameObject enemyGO)
     {
-        Debug.Log("Interact with enemy ");
-        Enemy enemy = enemyGO.GetComponent<Enemy>();
-        switch (enemyGO.tag)
+        Debug.Log($"Interact with enemy tag: {enemyGO.tag}");
+        Enemy enemy = enemyGO.GetComponentInParent<Enemy>();
+        if (enemy != null)
         {
-            case EnemyParts.Spirit:
-                {
-                    Debug.Log(" enemy was spirit");
-                    enemy.Die();
-                    break;
-                }
-            case EnemyParts.Crawler:
-                {
-                    GameManager.GameOver(this.tag);
-                    break;
-                }
+            switch (enemyGO.tag)
+            {
+                case EnemyParts.Spirit:
+                    {
+                        Debug.Log(" enemy was spirit");
+                        enemy.Die();
+                        break;
+                    }
+                case EnemyParts.Crawler:
+                    {
+                        GameManager.GameOver(this.tag);
+                        break;
+                    }
 
 
+            }
+
+        }
+        else
+        {
+            Debug.LogError($" Enemy {enemyGO.transform.parent.name} is missing the enemy script");
         }
     }
 
@@ -181,6 +186,20 @@ public class Player : MonoBehaviour
 
     }
 
+    public void Respawn(Transform trs)
+    {
+        transform.position = trs.position;
+        gameObject.SetActive(true);
+        float gravityDelay = gravityChangeDelay;
+        gravityChangeDelay = 0;
+
+        if((trs.position.y < 0 && !reversed) || ( trs.position.y>0 && reversed))
+        {
+            ReverseGravity();
+        }
+
+        gravityChangeDelay = gravityDelay;
+    }
     private void Translate(Vector3 direction)
     {
         //if (Time.realtimeSinceStartup - timeRead > (yMov < 0 ? fallTime / 10 : fallTime))

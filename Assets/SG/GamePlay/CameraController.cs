@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Assertions;
 
 public class CameraController : MonoBehaviour
@@ -11,6 +12,9 @@ public class CameraController : MonoBehaviour
     private Transform targetOneTrs;
     private Transform targetTwoTrs;
     private Transform targetTrs;
+    private Vector3 lastPosOne;
+    private Vector3 lastPosTwo;
+
     // Use this for initialization
     public Coroutine my_co;
 
@@ -18,13 +22,29 @@ public class CameraController : MonoBehaviour
     {
         Assert.IsNotNull(target, " Set the first target for the cameraCameraController");
         Assert.IsNotNull(targetTwo, " Set the second target for the cameraController");
+        GameManager.Get().OnGameOver += ResetVision;
 
     }
+
     void Start()
     {
         targetOneTrs = target.transform;
         targetTwoTrs = targetTwo.transform;
+        lastPosOne = targetOneTrs.position;
+        lastPosTwo = targetTwoTrs.position;
+        targetTrs = targetOneTrs;
     }
+    private void OnDisable()
+    {
+        GameManager.Get().OnGameOver -= ResetVision;
+    }
+    private void ResetVision()
+    {
+        transform.position = targetOneTrs.position;
+    }
+
+
+
 
 
     void Update()
@@ -32,14 +52,15 @@ public class CameraController : MonoBehaviour
         // TODO: include also the second target in those calculation
 
         targetTrs = ChooseTargetToFollow(targetOneTrs, targetTwoTrs);
-
-
+        lastPosOne = targetOneTrs.position;
+        lastPosTwo = targetTwoTrs.position;
         Vector3 oldPos = transform.position;
         Vector3 targetpos = new Vector3(targetTrs.position.x, targetTrs.position.y + posY, -10);
         transform.position = Vector3.Lerp(transform.position, targetpos, Time.deltaTime * smoothvalue);
 
         if (!IsPositionValid())
         {
+            Debug.Log(" Position is invalid");
             transform.position = oldPos;
         }
 
@@ -49,8 +70,11 @@ public class CameraController : MonoBehaviour
     private Transform ChooseTargetToFollow(Transform tOne, Transform tTwo)
     {
 
-        //TODO: in the game the target choosen is the one that pressed the key the last
-        if(tOne.position.x > tTwo.position.x)
+        if (tOne.position != lastPosOne && tTwo.position != lastPosTwo)
+        {
+            return targetTrs;
+        }
+        else if (tOne.position != lastPosOne && tTwo.position == lastPosTwo)
         {
             return tOne;
         }
@@ -58,6 +82,7 @@ public class CameraController : MonoBehaviour
         {
             return tTwo;
         }
+
     }
 
     private bool IsPositionValid()

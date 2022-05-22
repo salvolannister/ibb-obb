@@ -12,6 +12,8 @@ public class GameManager : Manager<GameManager>
     private List<Enemy> deadEnemyList = new List<Enemy>();
     [Header("Set Dynamically")]
     public Transform[] checkPoints;
+
+    public Action OnGameOver;
     void Start()
     {
         checkPoints = new Transform[2];
@@ -68,6 +70,7 @@ public class GameManager : Manager<GameManager>
             Debug.LogError($" checkpoint index is wrong i:{M.checkPoints.Length}");
         }
 
+        M.OnGameOver();
     }
 
     // Update is called once per frame

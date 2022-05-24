@@ -9,6 +9,20 @@ namespace Assets.SG.GamePlay
 {
     public partial class Player
     {
+        [Header("Set in inspector")]
+        [SerializeField]
+        private KeyCode jumpKey = KeyCode.None;
+        [SerializeField]
+        private KeyCode leftShiftKey = KeyCode.None;
+        [SerializeField]
+        private KeyCode rightShiftKey = KeyCode.None;
+
+        private bool isJumping = false;
+        [SerializeField]
+        private float moveSpeed = 0.5f;
+        public float jumpForce = 5f;
+        private Vector3 lastDir = Vector3.zero;
+        private bool isGrounded;
         private void HandleInput()
         {
             int run = 0;

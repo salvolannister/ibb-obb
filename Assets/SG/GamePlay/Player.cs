@@ -12,32 +12,13 @@ namespace Assets.SG.GamePlay
     [RequireComponent(typeof(Animator))]
     public partial class Player : MonoBehaviour
     {
-        [Header("Set in inspector")]
-        [SerializeField]
-        private KeyCode jumpKey = KeyCode.None;
-        [SerializeField]
-        private KeyCode leftShiftKey = KeyCode.None;
-        [SerializeField]
-        private KeyCode rightShiftKey = KeyCode.None;
 
-
-        [SerializeField]
-        private float moveSpeed = 0.5f;
-        public float jumpForce = 5f;
         [Tooltip("Layers that the player will collide with")]
         public LayerMask collisionLayerMask;
-
         private Rigidbody rb;
         private Animator animator;
-        private bool isJumping = false;
-        private Coroutine co = null;
-        private Vector3 lastDir = Vector3.zero;
-
         private int enemyLayer;
-        private bool isGrounded;
-
-
-      
+        
         private void Start()
         {
             co = null;

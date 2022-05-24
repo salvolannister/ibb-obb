@@ -6,13 +6,6 @@ using UnityEngine.Assertions;
 
 
 
-public static class PlayerSettings
-{
-    public const float Y_VELOCITY_LIMIT = 5f;
-    public const float VEL_DECELERATION_FACTOR = 0.3f;
-    public const float FORCE_DECELERATION_FACTOR = 0.2f;
-}
-
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(Animator))]
@@ -27,7 +20,7 @@ public class Player : MonoBehaviour
     private KeyCode rightShiftKey = KeyCode.None;
 
     [SerializeField]
-    private float gravity = -9.8f; 
+    private Vector3 gravity = new Vector3(0,-9.8f,0); 
     [SerializeField]
     private float moveSpeed = 0.5f;
 
@@ -127,13 +120,13 @@ public class Player : MonoBehaviour
         if (Math.Abs(rb.velocity.y) > PlayerSettings.Y_VELOCITY_LIMIT)
         {
             rb.velocity *= PlayerSettings.VEL_DECELERATION_FACTOR;
-            rb.AddForce(Vector3.up * -gravity * PlayerSettings.FORCE_DECELERATION_FACTOR, ForceMode.Impulse);
+            rb.AddForce( -gravity * PlayerSettings.FORCE_DECELERATION_FACTOR, ForceMode.Impulse);
         }
     }
 
     private void FixedUpdate()
     {
-        rb.AddForce(gravity * Vector3.up, ForceMode.Acceleration);
+        rb.AddForce(gravity, ForceMode.Acceleration);
     }
 
     private void OnCollisionEnter(Collision coll)
@@ -200,7 +193,7 @@ public class Player : MonoBehaviour
         isJumping = true;
         animator.Play("Jump");
         rb.velocity = Vector3.zero;
-        rb.AddForce(Vector3.up * jumpForce * -gravity, ForceMode.Impulse);
+        rb.AddForce(jumpForce * -gravity, ForceMode.Impulse);
 
     }
 
@@ -212,14 +205,14 @@ public class Player : MonoBehaviour
         if ((checkPointTrs.position.y < 0))
         {
             reversed = true;
-            if (gravity < 0)
+            if (gravity.y < 0)
                 gravity *= -1;
 
         }
         else
         {
             reversed = false;
-            if (gravity > 0)
+            if (gravity.y > 0)
                 gravity *= -1;
         }
 

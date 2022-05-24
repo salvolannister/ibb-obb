@@ -4,11 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public enum PlayerType
-{
-    obb = 0, //Color.red,
-    ibb = 1 //Color.green,
-}
+
 
 public static class PlayerSettings
 {
@@ -36,7 +32,6 @@ public class Player : MonoBehaviour
     private float moveSpeed = 0.5f;
 
     private const float gravityChangeDelay = 0.5f; // 0.05f;
-    public PlayerType playerType;
     public float jumpForce = 5f;
 
     private Rigidbody rb;

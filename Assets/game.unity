@@ -235,9 +235,9 @@ MonoBehaviour:
   jumpKey: 273
   leftShiftKey: 276
   rightShiftKey: 275
-  gravity: -9.8
   moveSpeed: 2
   jumpForce: 0.7
+  gravity: {x: 0, y: -9.8, z: 0}
 --- !u!54 &132857018
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -864,6 +864,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CheckPoint (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4612696794141239106, guid: 653ad9578c556c34f98adc3ce86dab95,
+        type: 3}
+      propertyPath: m_TagString
+      value: World
       objectReference: {fileID: 0}
     - target: {fileID: 5293426229776286081, guid: 653ad9578c556c34f98adc3ce86dab95,
         type: 3}
@@ -2895,9 +2900,9 @@ MonoBehaviour:
   jumpKey: 119
   leftShiftKey: 97
   rightShiftKey: 100
-  gravity: -9.8
   moveSpeed: 2
   jumpForce: 0.7
+  gravity: {x: 0, y: -9.8, z: 0}
 --- !u!65 &1910169727
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2922,6 +2927,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CheckPoint
+      objectReference: {fileID: 0}
+    - target: {fileID: 4612696794141239106, guid: 653ad9578c556c34f98adc3ce86dab95,
+        type: 3}
+      propertyPath: m_TagString
+      value: World
       objectReference: {fileID: 0}
     - target: {fileID: 5293426229776286081, guid: 653ad9578c556c34f98adc3ce86dab95,
         type: 3}

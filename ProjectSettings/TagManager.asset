@@ -9,6 +9,8 @@ TagManager:
   - White
   - Crawler
   - Spirit
+  - World
+  - UnderWorld
   layers:
   - Default
   - TransparentFX

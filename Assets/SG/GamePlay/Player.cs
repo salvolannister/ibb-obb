@@ -34,8 +34,8 @@ namespace Assets.SG.GamePlay
         private int playerLayer;
         private int enemyLayer;
         private int portalLayer;
-        private bool grounded;
-
+        private bool isGrounded;
+        
         private void FlipPlayer()
         {
             int gravityDir = reversed ? 1 : -1;
@@ -61,7 +61,7 @@ namespace Assets.SG.GamePlay
 
             rb = GetComponent<Rigidbody>();
             animator = GetComponent<Animator>();
-            grounded = false;
+            isGrounded = false;
         }
 
         private void Update()
@@ -80,7 +80,7 @@ namespace Assets.SG.GamePlay
 
             animator.SetInteger("Run", run);
 
-            if (Input.GetKeyDown(jumpKey) && !isJumping && grounded)
+            if (Input.GetKeyDown(jumpKey) && !isJumping && isGrounded)
             {
                 Jump();
             }
@@ -116,7 +116,7 @@ namespace Assets.SG.GamePlay
             int goLayer = coll.gameObject.layer;
             if (goLayer == floorLayer || goLayer == playerLayer || goLayer == enemyLayer) //TOOD: use bit ?? how ?
             {
-                grounded = true;
+                isGrounded = true;
                 if (isJumping)
                 {
                     isJumping = false;
@@ -173,7 +173,7 @@ namespace Assets.SG.GamePlay
 
         private void Jump()
         {
-            grounded = false;
+            isGrounded = false;
             isJumping = true;
             animator.Play("Jump");
             rb.velocity = Vector3.zero;
@@ -186,7 +186,7 @@ namespace Assets.SG.GamePlay
             transform.position = checkPointTrs.position;
             gameObject.SetActive(true);
 
-            if ((checkPointTrs.position.y < 0))
+            if ((checkPointTrs.parent.gameObject.CompareTag("UnderWorld")))
             {
                 reversed = true;
                 if (gravity.y < 0)

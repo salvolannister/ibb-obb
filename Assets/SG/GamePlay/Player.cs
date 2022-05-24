@@ -24,6 +24,7 @@ namespace Assets.SG.GamePlay
         [SerializeField]
         private float moveSpeed = 0.5f;
         public float jumpForce = 5f;
+        [Tooltip("Layers that the player will collide with")]
         public LayerMask collisionLayerMask;
 
         private Rigidbody rb;
@@ -35,21 +36,8 @@ namespace Assets.SG.GamePlay
         private int enemyLayer;
         private bool isGrounded;
 
-        private void FlipPlayer()
-        {
-            int gravityDir = IsReversed;
-            if (lastDir == Vector3.right)
-            {
-                transform.rotation = Quaternion.LookRotation(
-                    (reversed) ? Vector3.back : Vector3.forward, -Vector3.up * gravityDir);
-            }
-            else if (lastDir == Vector3.left)
-            {
-                transform.rotation = Quaternion.LookRotation(
-                    (reversed) ? Vector3.forward : Vector3.back, -Vector3.up * gravityDir);
-            }
-        }
 
+      
         private void Start()
         {
             co = null;
@@ -62,39 +50,8 @@ namespace Assets.SG.GamePlay
 
         private void Update()
         {
-            int run = 0;
-            if (Input.GetKey(leftShiftKey))
-            {
-                Translate(Vector3.left);
-                run = 1;
-            }
-            else if (Input.GetKey(rightShiftKey))
-            {
-                Translate(Vector3.right);
-                run = 1;
-            }
+            HandleInput();
 
-            animator.SetInteger("Run", run);
-
-            if (Input.GetKeyDown(jumpKey) && !isJumping && isGrounded)
-            {
-                Jump();
-            }
-
-        }
-
-
-
-        /// <summary>
-        /// Decelerates the player to prevent it going out of screen bounds
-        /// </summary>
-        public void HandleMaxYSpeed()
-        {
-            if (Math.Abs(rb.velocity.y) > PlayerSettings.Y_VELOCITY_LIMIT)
-            {
-                rb.velocity *= PlayerSettings.VEL_DECELERATION_FACTOR;
-                rb.AddForce(-gravity * PlayerSettings.FORCE_DECELERATION_FACTOR, ForceMode.Impulse);
-            }
         }
 
         private void FixedUpdate()
@@ -109,15 +66,12 @@ namespace Assets.SG.GamePlay
 
             if ((collisionLayerMask & layerMask2) != 0)
             {
-                isGrounded = true;
-                if (isJumping)
-                {
-                    isJumping = false;
-                }
+                EndJump();
             }
 
         }
 
+        
         private void OnTriggerEnter(Collider other)
         {
             int goLayer = other.gameObject.layer;
@@ -126,8 +80,6 @@ namespace Assets.SG.GamePlay
                 InteractWithEnemy(other.gameObject);
             }
         }
-
-
 
         private void InteractWithEnemy(GameObject enemyGO)
         {
@@ -163,17 +115,7 @@ namespace Assets.SG.GamePlay
             gameObject.SetActive(false);
 
         }
-
-        private void Jump()
-        {
-            isGrounded = false;
-            isJumping = true;
-            animator.Play("Jump");
-            rb.velocity = Vector3.zero;
-            rb.AddForce(jumpForce * -gravity, ForceMode.Impulse);
-
-        }
-
+       
         public void Respawn(Transform checkPointTrs)
         {
             transform.position = checkPointTrs.position;
@@ -181,29 +123,19 @@ namespace Assets.SG.GamePlay
 
             if ((checkPointTrs.parent.gameObject.CompareTag("UnderWorld")))
             {
-                reversed = true;
-                if (gravity.y < 0)
-                    gravity *= -1;
+                SetAndCheckReversedStatus(true);
 
             }
             else
             {
-                reversed = false;
-                if (gravity.y > 0)
-                    gravity *= -1;
+                SetAndCheckReversedStatus(false);
             }
 
             FlipPlayer();
         }
-        private void Translate(Vector3 direction)
-        {
-            lastDir = direction;
-            int gDir = IsReversed;
-            transform.rotation = Quaternion.LookRotation(direction, -Vector3.up * gDir);
-            transform.transform.Translate(direction * moveSpeed * Time.deltaTime, 0);
-        }
+      
 
-
+       
 
     }
 }

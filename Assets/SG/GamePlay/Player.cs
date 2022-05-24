@@ -81,7 +81,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void Start()
+    private void Start()
     {
         co = null;
         floorLayer = LayerMask.NameToLayer("Floor");
@@ -94,7 +94,7 @@ public class Player : MonoBehaviour
 
     }
 
-    void Update()
+    private void Update()
     {
         int run = 0;
         if (Input.GetKey(leftShiftKey))
@@ -118,7 +118,7 @@ public class Player : MonoBehaviour
     }
 
 
-    void OnTriggerExit(Collider coll)
+    private void OnTriggerExit(Collider coll)
     {
         if (coll.gameObject.layer == portalLayer)
         {
@@ -141,7 +141,7 @@ public class Player : MonoBehaviour
         rb.AddForce(gravity * Vector3.up, ForceMode.Acceleration);
     }
 
-    void OnCollisionEnter(Collision coll)
+    private void OnCollisionEnter(Collision coll)
     {
         int goLayer = coll.gameObject.layer;
         if (goLayer == floorLayer || goLayer == playerLayer || goLayer == enemyLayer) //TOOD: use bit ?? how ?
@@ -154,7 +154,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         int goLayer = other.gameObject.layer;
         if (goLayer == enemyLayer)
@@ -237,10 +237,5 @@ public class Player : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(direction, -Vector3.up * r);
         transform.transform.Translate(direction * moveSpeed * Time.deltaTime, 0);
     }
-
-    //void OnAnimatorMove()
-    //{
-    //    RotatePlayer();
-    //}
 
 }

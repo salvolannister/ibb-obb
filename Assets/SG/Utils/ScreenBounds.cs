@@ -63,7 +63,6 @@ namespace Assets.SG.Utils
             }
         }
 
-
         private Vector3 CalculateScale()
         {
             cachedOrthographicSize = cam.orthographicSize;
@@ -84,10 +83,6 @@ namespace Assets.SG.Utils
 
             return scaleColl;
         }
-
-
-
-
 
         static public Bounds BOUNDS
         {
@@ -147,8 +142,6 @@ namespace Assets.SG.Utils
             Vector3 locPos = Get().transform.InverseTransformPoint(worldPos);
             return OOB_(locPos.y);
         }
-
-
 
         static private int OOB_(float num)
         {

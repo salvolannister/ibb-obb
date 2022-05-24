@@ -1,4 +1,5 @@
 using UnityEngine;
+
 /// <summary>
 /// Implementation of a monosingleton to avoid repeating the same pattern many times for different
 /// scripts

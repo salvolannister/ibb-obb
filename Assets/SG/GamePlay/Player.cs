@@ -209,12 +209,12 @@ public class Player : MonoBehaviour
 
     }
 
-    public void Respawn(Transform trs)
+    public void Respawn(Transform checkPointTrs)
     {
-        transform.position = trs.position;
+        transform.position = checkPointTrs.position;
         gameObject.SetActive(true);
 
-        if ((trs.position.y < 0))
+        if ((checkPointTrs.position.y < 0))
         {
             reversed = true;
             if (gravity < 0)

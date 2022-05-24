@@ -36,7 +36,6 @@ public class GameManager : Manager<GameManager>
 
     public static void GameOver(string deadTag)
     {
-        Debug.Log("Game Over");
         GameManager M = Get();
         Player playerOne = M.players[0];
         Player playerTwo = M.players[1];
@@ -73,9 +72,5 @@ public class GameManager : Manager<GameManager>
         M.OnGameOver();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
 
-    }
 }

@@ -31,9 +31,9 @@ public class Player : MonoBehaviour
     private KeyCode rightShiftKey = KeyCode.None;
 
     [SerializeField]
-    protected float gravity = -9.8f; //TODO: ask protected or private?
+    private float gravity = -9.8f; 
     [SerializeField]
-    protected float moveSpeed = 0.5f;
+    private float moveSpeed = 0.5f;
 
     private const float gravityChangeDelay = 0.5f; // 0.05f;
     public PlayerType playerType;

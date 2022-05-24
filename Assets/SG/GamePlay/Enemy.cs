@@ -1,89 +1,91 @@
 ﻿using UnityEngine;
 
-
-public static class EnemyParts
+namespace Assets.SG.GamePlay
 {
-    public const string Spirit = "Spirit";
-    public const string Crawler = "Crawler";
-}
-
-public class Enemy : MonoBehaviour
-{
-
-    [Header(" Set in inspector")]
-    public float velocity;
-    [SerializeField]
-    private bool isStatic = false;
-    public Transform[] checkPoints;
-    public bool IsAlive
+    public static class EnemyParts
     {
-        get { return m_IsAlive; }
+        public const string Spirit = "Spirit";
+        public const string Crawler = "Crawler";
     }
-    private bool boxTaken = false;
-    private Vector3 originalPos;
-    private bool m_IsAlive;
-    private Transform m_trs;
-    private Vector3 destination;
-    private int enemyLayer;
-    private const float DIST_OFFSET = 0.002f;
-    void OnEnable()
+
+    public class Enemy : MonoBehaviour
     {
-        m_IsAlive = true;
-        m_trs = transform;
-        if (!isStatic)
+
+        [Header(" Set in inspector")]
+        public float velocity;
+        [SerializeField]
+        private bool isStatic = false;
+        public Transform[] checkPoints;
+        public bool IsAlive
         {
-            destination = checkPoints[0].position;
+            get { return m_IsAlive; }
+        }
+        private bool boxTaken = false;
+        private Vector3 originalPos;
+        private bool m_IsAlive;
+        private Transform m_trs;
+        private Vector3 destination;
+        private int enemyLayer;
+        private const float DIST_OFFSET = 0.002f;
+        void OnEnable()
+        {
+            m_IsAlive = true;
+            m_trs = transform;
+            if (!isStatic)
+            {
+                destination = checkPoints[0].position;
+
+            }
+        }
+        // Start is called before the first frame update
+        void Start()
+        {
+            enemyLayer = LayerMask.NameToLayer("Enemy");
+            originalPos = m_trs.position;
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            if (m_IsAlive && !isStatic)
+                Patrol();
+        }
+
+        private void Patrol()
+        {
+            float distance = Vector3.Distance(m_trs.position, destination);
+            if (distance <= DIST_OFFSET)
+            {
+                destination = UpdateDestination();
+            }
+            m_trs.position = Vector3.Lerp(m_trs.position, destination, 0.1f * Time.deltaTime * velocity);
+        }
+
+        private Vector3 UpdateDestination()
+        {
+            return destination == checkPoints[0].position ? checkPoints[1].position : checkPoints[0].position;
+        }
+
+        void OnTriggerEnter(Collider coll)
+        {
+            if (coll.gameObject.layer == enemyLayer && !isStatic)
+            {
+                UpdateDestination();
+            }
+        }
+
+        internal void Die()
+        {
+            m_IsAlive = false;
+            GameManager.AddDeadEnemy(this);
+            gameObject.SetActive(false);
 
         }
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        enemyLayer = LayerMask.NameToLayer("Enemy");
-        originalPos = m_trs.position;
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (m_IsAlive && !isStatic)
-            Patrol();
-    }
-
-    private void Patrol()
-    {
-        float distance = Vector3.Distance(m_trs.position, destination);
-        if (distance<= DIST_OFFSET)
+        internal void Respawn()
         {
-            destination = UpdateDestination();
+            transform.position = originalPos;
+            m_IsAlive = true;
         }
-        m_trs.position = Vector3.Lerp(m_trs.position, destination, 0.1f *Time.deltaTime * velocity);
-    }
-
-    private Vector3 UpdateDestination()
-    {
-        return destination == checkPoints[0].position ? checkPoints[1].position : checkPoints[0].position;
-    }
-
-    void OnTriggerEnter(Collider coll)
-    {
-        if (coll.gameObject.layer == enemyLayer && !isStatic)
-        {
-            UpdateDestination();
-        }
-    }
-
-    internal void Die()
-    {
-        m_IsAlive = false;
-        GameManager.AddDeadEnemy(this);
-        gameObject.SetActive(false);
-        
-    }
-
-    internal void Respawn()
-    {
-        transform.position = originalPos;
-        m_IsAlive = true;
     }
 }

@@ -20,26 +20,21 @@ namespace Assets.SG.GamePlay
         [SerializeField]
         private KeyCode rightShiftKey = KeyCode.None;
 
+        
         [SerializeField]
-        private Vector3 gravity = new Vector3(0, -9.8f, 0);
-        [SerializeField]
-        private float moveSpeed = 0.5f;
-
-        private const float gravityChangeDelay = 0.5f; // 0.05f;
+        private float moveSpeed = 0.5f;      
         public float jumpForce = 5f;
 
         private Rigidbody rb;
         private Animator animator;
         private bool isJumping = false;
         private Coroutine co = null;
-        private bool reversed = false;
         private Vector3 lastDir = Vector3.zero;
         private int floorLayer;
         private int playerLayer;
         private int enemyLayer;
         private int portalLayer;
-
-
+        private bool grounded;
 
         private void FlipPlayer()
         {
@@ -66,7 +61,7 @@ namespace Assets.SG.GamePlay
 
             rb = GetComponent<Rigidbody>();
             animator = GetComponent<Animator>();
-
+            grounded = false;
         }
 
         private void Update()
@@ -85,7 +80,7 @@ namespace Assets.SG.GamePlay
 
             animator.SetInteger("Run", run);
 
-            if (Input.GetKeyDown(jumpKey) && !isJumping)
+            if (Input.GetKeyDown(jumpKey) && !isJumping && grounded)
             {
                 Jump();
             }
@@ -121,6 +116,7 @@ namespace Assets.SG.GamePlay
             int goLayer = coll.gameObject.layer;
             if (goLayer == floorLayer || goLayer == playerLayer || goLayer == enemyLayer) //TOOD: use bit ?? how ?
             {
+                grounded = true;
                 if (isJumping)
                 {
                     isJumping = false;
@@ -177,6 +173,7 @@ namespace Assets.SG.GamePlay
 
         private void Jump()
         {
+            grounded = false;
             isJumping = true;
             animator.Play("Jump");
             rb.velocity = Vector3.zero;
@@ -208,7 +205,7 @@ namespace Assets.SG.GamePlay
         private void Translate(Vector3 direction)
         {
             lastDir = direction;
-            int gDir = GetGravityDirection();
+            int gDir = IsReversed;
             transform.rotation = Quaternion.LookRotation(direction, -Vector3.up * gDir);
             transform.transform.Translate(direction * moveSpeed * Time.deltaTime, 0);
         }

@@ -20,25 +20,24 @@ namespace Assets.SG.GamePlay
         [SerializeField]
         private KeyCode rightShiftKey = KeyCode.None;
 
-        
+
         [SerializeField]
-        private float moveSpeed = 0.5f;      
+        private float moveSpeed = 0.5f;
         public float jumpForce = 5f;
+        public LayerMask collisionLayerMask;
 
         private Rigidbody rb;
         private Animator animator;
         private bool isJumping = false;
         private Coroutine co = null;
         private Vector3 lastDir = Vector3.zero;
-        private int floorLayer;
-        private int playerLayer;
+
         private int enemyLayer;
-        private int portalLayer;
         private bool isGrounded;
-        
+
         private void FlipPlayer()
         {
-            int gravityDir = reversed ? 1 : -1;
+            int gravityDir = IsReversed;
             if (lastDir == Vector3.right)
             {
                 transform.rotation = Quaternion.LookRotation(
@@ -54,10 +53,7 @@ namespace Assets.SG.GamePlay
         private void Start()
         {
             co = null;
-            floorLayer = LayerMask.NameToLayer("Floor");
-            playerLayer = LayerMask.NameToLayer("Player");
             enemyLayer = LayerMask.NameToLayer("Enemy");
-            portalLayer = LayerMask.NameToLayer("Portal");
 
             rb = GetComponent<Rigidbody>();
             animator = GetComponent<Animator>();
@@ -88,16 +84,11 @@ namespace Assets.SG.GamePlay
         }
 
 
-        private void OnTriggerExit(Collider coll)
-        {
-            if (coll.gameObject.layer == portalLayer)
-            {
-                HandleMaxYSpeed();
-            }
 
-        }
-
-        private void HandleMaxYSpeed()
+        /// <summary>
+        /// Decelerates the player to prevent it going out of screen bounds
+        /// </summary>
+        public void HandleMaxYSpeed()
         {
             if (Math.Abs(rb.velocity.y) > PlayerSettings.Y_VELOCITY_LIMIT)
             {
@@ -114,15 +105,17 @@ namespace Assets.SG.GamePlay
         private void OnCollisionEnter(Collision coll)
         {
             int goLayer = coll.gameObject.layer;
-            if (goLayer == floorLayer || goLayer == playerLayer || goLayer == enemyLayer) //TOOD: use bit ?? how ?
+            LayerMask layerMask2 = 1 << goLayer;
+
+            if ((collisionLayerMask & layerMask2) != 0)
             {
                 isGrounded = true;
                 if (isJumping)
                 {
                     isJumping = false;
                 }
-
             }
+
         }
 
         private void OnTriggerEnter(Collider other)
@@ -211,6 +204,6 @@ namespace Assets.SG.GamePlay
         }
 
 
-    
+
     }
 }

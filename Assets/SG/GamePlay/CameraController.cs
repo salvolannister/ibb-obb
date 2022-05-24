@@ -18,8 +18,7 @@ namespace Assets.SG.GamePlay
         private Vector3 lastPosOne;
         private Vector3 lastPosTwo;
 
-        // Use this for initialization
-        public Coroutine my_co;
+
 
         private void OnEnable()
         {
@@ -52,18 +51,16 @@ namespace Assets.SG.GamePlay
 
         void Update()
         {
-            // TODO: include also the second target in those calculation
-
             targetTrs = ChooseTargetToFollow(targetOneTrs, targetTwoTrs);
             lastPosOne = targetOneTrs.position;
             lastPosTwo = targetTwoTrs.position;
-            Vector3 oldPos = transform.position;
+            Vector3 oldCamPos = transform.position;
             Vector3 targetpos = new Vector3(targetTrs.position.x, targetTrs.position.y + posY, -10);
             transform.position = Vector3.Lerp(transform.position, targetpos, Time.deltaTime * smoothvalue);
 
             if (!IsPositionValid())
             {
-                transform.position = Vector3.Lerp(transform.position, oldPos, Time.deltaTime * smoothvalue);
+                transform.position = oldCamPos;
             }
 
 
@@ -87,6 +84,10 @@ namespace Assets.SG.GamePlay
 
         }
 
+        /// <summary>
+        /// Return true only if both player are inside screen bounds
+        /// </summary>
+        /// <returns></returns>
         private bool IsPositionValid()
         {
             if (targetTrs != targetOneTrs && ScreenBounds.OOB(targetOneTrs.position))

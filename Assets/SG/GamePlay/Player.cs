@@ -10,6 +10,13 @@ public enum PlayerType
     ibb = 1 //Color.green,
 }
 
+public static class PlayerSettings
+{
+    public const float Y_VELOCITY_LIMIT = 5f;
+    public const float VEL_DECELERATION_FACTOR = 0.3f;
+    public const float FORCE_DECELERATION_FACTOR = 0.2f;
+}
+
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(Animator))]
@@ -28,14 +35,22 @@ public class Player : MonoBehaviour
     [SerializeField]
     protected float moveSpeed = 0.5f;
 
+    private float gravityChangeDelay = 0.5f; // 0.05f;
+    public PlayerType playerType;
+    public float jumpForce = 5f;
+
     private Rigidbody rb;
     private Animator animator;
     private bool isJumping = false;
     private Coroutine co = null;
     private bool reversed = false;
     private Vector3 lastDir = Vector3.zero;
-    public float gravityChangeDelay = 0.05f;
-    public PlayerType playerType;
+    private int floorLayer;
+    private int playerLayer;
+    private int enemyLayer;
+    private int portalLayer;
+    private bool maxVelocitySet;
+    private float maxYSpeed;
     public void ReverseGravity()
     {
         co = StartCoroutine(_ReverseGravity());
@@ -56,19 +71,16 @@ public class Player : MonoBehaviour
         if (lastDir == Vector3.right)
         { // Moving Right
             transform.rotation = Quaternion.LookRotation(
-                (reversed) ? new Vector3(0, 0, -1.0f) : new Vector3(0, 0, 1.0f), -Vector3.up * gravityDir);
+                (reversed) ? Vector3.back : Vector3.forward, -Vector3.up * gravityDir);
         }
         else if (lastDir == Vector3.left)
         { // Moving Left
             transform.rotation = Quaternion.LookRotation(
-                (reversed) ? new Vector3(0, 0, 1.0f) : new Vector3(0, 0, -1.0f), -Vector3.up * gravityDir);
+                (reversed) ? Vector3.forward : Vector3.back, -Vector3.up * gravityDir);
         }
     }
 
-    public float jumpForce = 5f;
-    public int floorLayer;
-    public int playerLayer;
-    public int enemyLayer;
+
     void Awake()
     {
 
@@ -80,6 +92,7 @@ public class Player : MonoBehaviour
         floorLayer = LayerMask.NameToLayer("Floor");
         playerLayer = LayerMask.NameToLayer("Player");
         enemyLayer = LayerMask.NameToLayer("Enemy");
+        portalLayer = LayerMask.NameToLayer("Portal");
 
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
@@ -107,6 +120,27 @@ public class Player : MonoBehaviour
             Jump();
         }
 
+        //HandleMaxSpeed();
+
+    }
+
+
+    void OnTriggerExit(Collider coll)
+    {
+        if (coll.gameObject.layer == portalLayer)
+        {
+            HandleMaxYSpeed();
+        }
+
+    }
+
+    private void HandleMaxYSpeed()
+    {
+        if (Math.Abs(rb.velocity.y) > PlayerSettings.Y_VELOCITY_LIMIT)
+        {
+            rb.velocity *= PlayerSettings.VEL_DECELERATION_FACTOR;
+            rb.AddForce(Vector3.up * -gravity * PlayerSettings.FORCE_DECELERATION_FACTOR, ForceMode.Impulse);
+        }
     }
 
     private void FixedUpdate()
@@ -136,6 +170,8 @@ public class Player : MonoBehaviour
             InteractWithEnemy(other.gameObject);
         }
     }
+
+
 
     private void InteractWithEnemy(GameObject enemyGO)
     {
@@ -190,14 +226,15 @@ public class Player : MonoBehaviour
     {
         transform.position = trs.position;
         gameObject.SetActive(true);
-    
-        if ((trs.position.y < 0 ))
+
+        if ((trs.position.y < 0))
         {
             reversed = true;
             if (gravity < 0)
                 gravity *= -1;
 
-        }else
+        }
+        else
         {
             reversed = false;
             if (gravity > 0)

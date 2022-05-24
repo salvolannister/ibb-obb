@@ -20,16 +20,15 @@ namespace Assets.SG.GamePlay
         {
             get { return isAlive; }
         }
-        private Vector3 originalPos;
         private bool isAlive;
-        private Transform trs;
+        private Vector3 originalPos;
         private Vector3 destination;
+        private Transform trs;
         private int enemyLayer;
         private const float DIST_OFFSET = 0.002f;
         void OnEnable()
         {
             isAlive = true;
-            trs = transform;
             if (!isStatic)
             {
                 destination = checkPoints[0].position;
@@ -39,6 +38,7 @@ namespace Assets.SG.GamePlay
         // Start is called before the first frame update
         void Start()
         {
+            trs = transform;
             enemyLayer = LayerMask.NameToLayer("Enemy");
             originalPos = trs.position;
         }
@@ -69,7 +69,7 @@ namespace Assets.SG.GamePlay
         {
             if (coll.gameObject.layer == enemyLayer && !isStatic)
             {
-                UpdateDestination();
+                destination = UpdateDestination();
             }
         }
 

@@ -15,7 +15,7 @@ namespace Assets.SG.GamePlay
         private Vector3 gravity = new Vector3(0, -9.8f, 0);
         private const float gravityChangeDelay = 0.5f; // 0.05f;
         private bool reversed = false;
-
+        private Coroutine co = null;
         public int IsReversed
         {
             get

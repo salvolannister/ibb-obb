@@ -17,7 +17,7 @@ namespace Assets.SG.GamePlay
         private Transform targetTrs;
         private Vector3 lastPosOne;
         private Vector3 lastPosTwo;
-
+        private Vector3 oldCamPos;
 
 
         private void OnEnable()
@@ -54,7 +54,7 @@ namespace Assets.SG.GamePlay
             targetTrs = ChooseTargetToFollow(targetOneTrs, targetTwoTrs);
             lastPosOne = targetOneTrs.position;
             lastPosTwo = targetTwoTrs.position;
-            Vector3 oldCamPos = transform.position;
+            oldCamPos = transform.position;
             Vector3 targetpos = new Vector3(targetTrs.position.x, targetTrs.position.y + posY, -10);
             transform.position = Vector3.Lerp(transform.position, targetpos, Time.deltaTime * smoothvalue);
 

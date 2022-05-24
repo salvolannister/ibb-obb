@@ -45,10 +45,6 @@ namespace Assets.SG.GamePlay
             transform.position = targetOneTrs.position;
         }
 
-
-
-
-
         void Update()
         {
             targetTrs = ChooseTargetToFollow(targetOneTrs, targetTwoTrs);

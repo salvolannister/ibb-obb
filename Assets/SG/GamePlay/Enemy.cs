@@ -18,19 +18,18 @@ namespace Assets.SG.GamePlay
         public Transform[] checkPoints;
         public bool IsAlive
         {
-            get { return m_IsAlive; }
+            get { return isAlive; }
         }
-        private bool boxTaken = false;
         private Vector3 originalPos;
-        private bool m_IsAlive;
-        private Transform m_trs;
+        private bool isAlive;
+        private Transform trs;
         private Vector3 destination;
         private int enemyLayer;
         private const float DIST_OFFSET = 0.002f;
         void OnEnable()
         {
-            m_IsAlive = true;
-            m_trs = transform;
+            isAlive = true;
+            trs = transform;
             if (!isStatic)
             {
                 destination = checkPoints[0].position;
@@ -41,24 +40,24 @@ namespace Assets.SG.GamePlay
         void Start()
         {
             enemyLayer = LayerMask.NameToLayer("Enemy");
-            originalPos = m_trs.position;
+            originalPos = trs.position;
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (m_IsAlive && !isStatic)
+            if (isAlive && !isStatic)
                 Patrol();
         }
 
         private void Patrol()
         {
-            float distance = Vector3.Distance(m_trs.position, destination);
+            float distance = Vector3.Distance(trs.position, destination);
             if (distance <= DIST_OFFSET)
             {
                 destination = UpdateDestination();
             }
-            m_trs.position = Vector3.Lerp(m_trs.position, destination, 0.1f * Time.deltaTime * velocity);
+            trs.position = Vector3.Lerp(trs.position, destination, 0.1f * Time.deltaTime * velocity);
         }
 
         private Vector3 UpdateDestination()
@@ -76,7 +75,7 @@ namespace Assets.SG.GamePlay
 
         internal void Die()
         {
-            m_IsAlive = false;
+            isAlive = false;
             GameManager.AddDeadEnemy(this);
             gameObject.SetActive(false);
 
@@ -85,7 +84,7 @@ namespace Assets.SG.GamePlay
         internal void Respawn()
         {
             transform.position = originalPos;
-            m_IsAlive = true;
+            isAlive = true;
         }
     }
 }

@@ -2,25 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class CheckPoint : MonoBehaviour
+namespace Assets.SG.GamePlay
 {
-    [Header("Set dynamically")]
-    [SerializeField]
-    private bool isChecked = false;
-    private int playerLayer;
-    public void Start()
+    public class CheckPoint : MonoBehaviour
     {
-        playerLayer = LayerMask.NameToLayer("Player");
-    }
-    void OnTriggerEnter(Collider other)
-    {
-        if (!isChecked && other.gameObject.layer == playerLayer)
+        [Header("Set dynamically")]
+        [SerializeField]
+        private bool isChecked = false;
+        private int playerLayer;
+        public void Start()
         {
-            GameManager.CheckPointReached(gameObject.transform.GetChild(0).transform, gameObject.transform.GetChild(1).transform);
-            isChecked = true;
-            gameObject.SetActive(false);
+            playerLayer = LayerMask.NameToLayer("Player");
         }
+        void OnTriggerEnter(Collider other)
+        {
+            if (!isChecked && other.gameObject.layer == playerLayer)
+            {
+                GameManager.CheckPointReached(gameObject.transform.GetChild(0).transform, gameObject.transform.GetChild(1).transform);
+                isChecked = true;
+                gameObject.SetActive(false);
+            }
+        }
+
     }
-        
 }

@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     protected float moveSpeed = 0.5f;
 
-    private float gravityChangeDelay = 0.5f; // 0.05f;
+    private const float gravityChangeDelay = 0.5f; // 0.05f;
     public PlayerType playerType;
     public float jumpForce = 5f;
 
@@ -49,8 +49,7 @@ public class Player : MonoBehaviour
     private int playerLayer;
     private int enemyLayer;
     private int portalLayer;
-    private bool maxVelocitySet;
-    private float maxYSpeed;
+
     public void ReverseGravity()
     {
         co = StartCoroutine(_ReverseGravity());
@@ -60,30 +59,26 @@ public class Player : MonoBehaviour
     private IEnumerator _ReverseGravity()
     {
         reversed = !reversed;
+        FlipPlayer();
+
         yield return new WaitForSeconds(gravityChangeDelay);
         gravity *= -1;
         co = null;
     }
 
-    private void RotatePlayer()
+    private void FlipPlayer()
     {
         int gravityDir = reversed ? 1 : -1;
         if (lastDir == Vector3.right)
-        { // Moving Right
+        {
             transform.rotation = Quaternion.LookRotation(
                 (reversed) ? Vector3.back : Vector3.forward, -Vector3.up * gravityDir);
         }
         else if (lastDir == Vector3.left)
-        { // Moving Left
+        {
             transform.rotation = Quaternion.LookRotation(
                 (reversed) ? Vector3.forward : Vector3.back, -Vector3.up * gravityDir);
         }
-    }
-
-
-    void Awake()
-    {
-
     }
 
     void Start()
@@ -119,8 +114,6 @@ public class Player : MonoBehaviour
         {
             Jump();
         }
-
-        //HandleMaxSpeed();
 
     }
 
@@ -164,7 +157,6 @@ public class Player : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         int goLayer = other.gameObject.layer;
-        Debug.Log($"collider wiht {other.gameObject.name}, layer = {other.gameObject.layer}  and enemy layer {enemyLayer}");
         if (goLayer == enemyLayer)
         {
             InteractWithEnemy(other.gameObject);
@@ -175,7 +167,6 @@ public class Player : MonoBehaviour
 
     private void InteractWithEnemy(GameObject enemyGO)
     {
-        Debug.Log($"Interact with enemy tag: {enemyGO.tag}");
         Enemy enemy = enemyGO.GetComponentInParent<Enemy>();
         if (enemy != null)
         {
@@ -192,22 +183,18 @@ public class Player : MonoBehaviour
                         break;
                     }
 
-
             }
 
         }
-        else
-        {
-            Debug.LogError($" Enemy {enemyGO.transform.parent.name} is missing the enemy script");
-        }
+
     }
 
     public void Die(Action callback = null)
     {
-        // Make Explosion Effect
-        // once finished
         if (co != null)
             StopCoroutine(co);
+        //This callback will be the other player Die() function, like in the original game I would like the player who hit the enemy
+        //to die first after showing an explosion effect
         callback?.Invoke();
         gameObject.SetActive(false);
 
@@ -241,18 +228,19 @@ public class Player : MonoBehaviour
                 gravity *= -1;
         }
 
+        FlipPlayer();
     }
     private void Translate(Vector3 direction)
     {
-        //if (Time.realtimeSinceStartup - timeRead > (yMov < 0 ? fallTime / 10 : fallTime))
         lastDir = direction;
-        transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+        int r = reversed ? 1 : -1;
+        transform.rotation = Quaternion.LookRotation(direction, -Vector3.up * r);
         transform.transform.Translate(direction * moveSpeed * Time.deltaTime, 0);
     }
 
-    void OnAnimatorMove()
-    {
-        RotatePlayer();
-    }
+    //void OnAnimatorMove()
+    //{
+    //    RotatePlayer();
+    //}
 
 }

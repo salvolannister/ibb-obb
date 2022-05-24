@@ -2,24 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class Portal : MonoBehaviour
+namespace Assets.SG.GamePlay
 {
-    [Header("Dynamically Set")]
-    private int playerLayer;
-    void Start()
+    public class Portal : MonoBehaviour
     {
-        playerLayer = LayerMask.NameToLayer("Player");
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.layer == playerLayer)
+        [Header("Dynamically Set")]
+        private int playerLayer;
+        void Start()
         {
-            Player pl = other.gameObject.GetComponent<Player>();
-            if (pl != null)
+            playerLayer = LayerMask.NameToLayer("Player");
+        }
+
+        void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.layer == playerLayer)
             {
-                pl.ReverseGravity();
+                Player pl = other.gameObject.GetComponent<Player>();
+                if (pl != null)
+                {
+                    pl.ReverseGravity();
+                }
             }
         }
     }

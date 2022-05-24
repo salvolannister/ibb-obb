@@ -45,6 +45,10 @@ public class GameManager : Manager<GameManager>
         {
             playerOne.Die(() => playerTwo.Die());
         }
+        else
+        {
+            playerTwo.Die(() => playerOne.Die());
+        }
 
         // reactivate enemies
         foreach (Enemy enemy in M.deadEnemyList)

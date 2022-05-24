@@ -55,20 +55,14 @@ public class GameManager : Manager<GameManager>
 
         }
         M.deadEnemyList.Clear();
-        
-        // respawn players! 
-       
+               
         if (M.checkPoints != null && M.checkPoints.Length == 2)
         {
             playerOne.Respawn(M.checkPoints[0]);
             playerTwo.Respawn(M.checkPoints[1]);
   
         }
-        else
-        {
-            Debug.LogError($" checkpoint index is wrong i:{M.checkPoints.Length}");
-        }
-
+        
         M.OnGameOver();
     }
 

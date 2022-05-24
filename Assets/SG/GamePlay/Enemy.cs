@@ -9,11 +9,6 @@ public static class EnemyParts
 
 public class Enemy : MonoBehaviour
 {
-    /*
-    Characters can kill an enemy
-    Characters can be killed by enemy
-    The enemies move around
-    */
 
     [Header(" Set in inspector")]
     public float velocity;
@@ -65,11 +60,6 @@ public class Enemy : MonoBehaviour
         m_trs.position = Vector3.Lerp(m_trs.position, destination, 0.1f *Time.deltaTime * velocity);
     }
 
-
-    //void OnDrawGizmos()
-    //{
-    //    Gizmos.DrawSphere(destination, 0.3f);
-    //}
     private Vector3 UpdateDestination()
     {
         return destination == checkPoints[0].position ? checkPoints[1].position : checkPoints[0].position;
@@ -85,12 +75,9 @@ public class Enemy : MonoBehaviour
 
     internal void Die()
     {
-        Debug.Log(" Enemy died");
         m_IsAlive = false;
         GameManager.AddDeadEnemy(this);
         gameObject.SetActive(false);
-        // Die effect
-        // spawn box 
         
     }
 

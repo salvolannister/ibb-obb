@@ -92,7 +92,6 @@ namespace Assets.SG.GamePlay
 
         private void EndJump()
         {
-            Debug.Log("End Jumping");
             isGrounded = true;
             if (isJumping)
             {

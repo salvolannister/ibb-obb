@@ -14,7 +14,7 @@ namespace Assets.SG.GamePlay
     {
 
         [Tooltip("Layers that the player will collide with")]
-        public LayerMask collisionLayerMask;
+        public LayerMask layerMaskThatEndsJump;
         private Rigidbody rb;
         private Animator animator;
         private int enemyLayer;
@@ -45,7 +45,7 @@ namespace Assets.SG.GamePlay
             int goLayer = coll.gameObject.layer;
             LayerMask layerMask2 = 1 << goLayer;
 
-            if ((collisionLayerMask & layerMask2) != 0)
+            if ((layerMaskThatEndsJump & layerMask2) != 0)
             {
                 EndJump();
             }

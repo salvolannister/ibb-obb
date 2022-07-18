@@ -25,11 +25,11 @@ namespace Assets.SG.GamePlay
         public Transform ChooseTargetToFollow()
         {
             Transform targetTrs = previousSelected;
-            if (plOne.IsWalking() && !plTwo.IsWalking())
+            if (plOne.IsActive() && !plTwo.IsActive())
             {
                 previousSelected = targetTrs = tOne;
             }
-            else if (!plOne.IsWalking() && plTwo.IsWalking())
+            else if (!plOne.IsActive() && plTwo.IsActive())
             {
                 previousSelected = targetTrs = tTwo;
             }

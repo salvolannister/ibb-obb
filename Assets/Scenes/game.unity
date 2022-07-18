@@ -487,7 +487,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 395046720}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.92, y: 3.17, z: 0}
+  m_LocalPosition: {x: 11.92, y: 3.217, z: 0}
   m_LocalScale: {x: 5, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 1103156389}
@@ -593,7 +593,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 407761085}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 8.89, y: 2, z: 0}
+  m_LocalPosition: {x: 8.89, y: 2.544, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1695600150576606308}
@@ -652,7 +652,7 @@ PrefabInstance:
     - target: {fileID: 6951925151242881116, guid: 2e1da4b6ff0cf304bad021ea721358f8,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.19
+      value: 3.225
       objectReference: {fileID: 0}
     - target: {fileID: 6951925151242881116, guid: 2e1da4b6ff0cf304bad021ea721358f8,
         type: 3}
@@ -734,6 +734,7 @@ GameObject:
   - component: {fileID: 786672384}
   - component: {fileID: 786672379}
   - component: {fileID: 786672380}
+  - component: {fileID: 786672381}
   m_Layer: 13
   m_Name: Camera
   m_TagString: MainCamera
@@ -773,6 +774,20 @@ MonoBehaviour:
   targetTwo: {fileID: 1910169722}
   smoothvalue: 1
   posY: 2
+--- !u!114 &786672381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 786672378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c1b2bf7535552147906438d84853d90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plOne: {fileID: 132857017}
+  plTwo: {fileID: 1910169726}
 --- !u!20 &786672382
 Camera:
   m_ObjectHideFlags: 0
@@ -2202,7 +2217,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1477228853}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.23, y: 3.1, z: 0.31642127}
+  m_LocalPosition: {x: 11.23, y: 3.66, z: 0.31642127}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1517515895}
@@ -2222,7 +2237,7 @@ GameObject:
   m_Layer: 10
   m_Name: checkPoint
   m_TagString: Untagged
-  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1

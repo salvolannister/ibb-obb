@@ -5,13 +5,14 @@ using UnityEngine.Assertions;
 
 namespace Assets.SG.GamePlay
 {
+
     public class CameraController : MonoBehaviour
     {
         public GameObject target;
         public GameObject targetTwo;
         public int smoothvalue = 2;
         public float posY = 1;
-
+        private ICamTargetSelector targetSelector;
         private Transform targetOneTrs;
         private Transform targetTwoTrs;
         private Transform targetTrs;
@@ -35,6 +36,8 @@ namespace Assets.SG.GamePlay
             lastPosOne = targetOneTrs.position;
             lastPosTwo = targetTwoTrs.position;
             targetTrs = targetOneTrs;
+            targetSelector = GetComponent<ICamTargetSelector>();
+            Assert.IsNotNull(targetSelector, " Cam target selector script missing");
         }
         private void OnDisable()
         {
@@ -47,7 +50,7 @@ namespace Assets.SG.GamePlay
 
         void Update()
         {
-            targetTrs = ChooseTargetToFollow(targetOneTrs, targetTwoTrs);
+            targetTrs = targetSelector.ChooseTargetToFollow();
             lastPosOne = targetOneTrs.position;
             lastPosTwo = targetTwoTrs.position;
             oldCamPos = transform.position;
@@ -62,23 +65,23 @@ namespace Assets.SG.GamePlay
 
         }
 
-        private Transform ChooseTargetToFollow(Transform tOne, Transform tTwo)
-        {
+        //private Transform ChooseTargetToFollow(Transform tOne, Transform tTwo)
+        //{
 
-            if (tOne.position != lastPosOne && tTwo.position != lastPosTwo)
-            {
-                return targetTrs;
-            }
-            else if (tOne.position != lastPosOne && tTwo.position == lastPosTwo)
-            {
-                return tOne;
-            }
-            else
-            {
-                return tTwo;
-            }
+        //    if (tOne.position != lastPosOne && tTwo.position != lastPosTwo)
+        //    {
+        //        return targetTrs;
+        //    }
+        //    else if (tOne.position != lastPosOne && tTwo.position == lastPosTwo)
+        //    {
+        //        return tOne;
+        //    }
+        //    else
+        //    {
+        //        return tTwo;
+        //    }
 
-        }
+        //}
 
         /// <summary>
         /// Return true only if both player are inside screen bounds

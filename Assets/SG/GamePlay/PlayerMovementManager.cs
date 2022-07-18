@@ -25,19 +25,20 @@ namespace Assets.SG.GamePlay
         private bool isGrounded;
         private void HandleInput()
         {
-            int run = 0;
+              isWalking = false;
             if (Input.GetKey(leftShiftKey))
             {
                 Translate(Vector3.left);
-                run = 1;
+                isWalking = true;
             }
             else if (Input.GetKey(rightShiftKey))
             {
                 Translate(Vector3.right);
-                run = 1;
+                isWalking = true;
             }
 
-            animator.SetInteger("Run", run);
+            int runAnim = isWalking? 1 : 0;
+            animator.SetInteger("Run", runAnim);
 
             if (Input.GetKeyDown(jumpKey) && !isJumping && isGrounded)
             {

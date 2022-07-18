@@ -18,7 +18,12 @@ namespace Assets.SG.GamePlay
         private Rigidbody rb;
         private Animator animator;
         private int enemyLayer;
-        
+        private bool isWalking;
+
+        public bool IsWalking()
+        {
+            return isWalking;
+        }
         private void Start()
         {
             co = null;

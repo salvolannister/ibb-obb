@@ -39,7 +39,6 @@ namespace Assets.SG.GamePlay
         void Start()
         {
             trs = transform;
-            enemyLayer = LayerMask.NameToLayer("Enemy");
             originalPos = trs.position;
         }
 
@@ -67,7 +66,7 @@ namespace Assets.SG.GamePlay
 
         void OnTriggerEnter(Collider coll)
         {
-            if (coll.gameObject.layer == enemyLayer && !isStatic)
+            if (!isStatic)
             {
                 destination = UpdateDestination();
             }

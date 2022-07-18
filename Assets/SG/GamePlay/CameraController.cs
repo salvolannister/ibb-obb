@@ -12,14 +12,13 @@ namespace Assets.SG.GamePlay
         public GameObject targetTwo;
         public int smoothvalue = 2;
         public float posY = 1;
+
         private ICamTargetSelector targetSelector;
         private Transform targetOneTrs;
         private Transform targetTwoTrs;
         private Transform targetTrs;
-        private Vector3 lastPosOne;
-        private Vector3 lastPosTwo;
         private Vector3 oldCamPos;
-
+        private const float MIN_ZOOM_VALUE = -10f;
 
         private void OnEnable()
         {
@@ -33,8 +32,6 @@ namespace Assets.SG.GamePlay
         {
             targetOneTrs = target.transform;
             targetTwoTrs = targetTwo.transform;
-            lastPosOne = targetOneTrs.position;
-            lastPosTwo = targetTwoTrs.position;
             targetTrs = targetOneTrs;
             targetSelector = GetComponent<ICamTargetSelector>();
             Assert.IsNotNull(targetSelector, " Cam target selector script missing");
@@ -50,44 +47,30 @@ namespace Assets.SG.GamePlay
 
         void Update()
         {
-            targetTrs = targetSelector.ChooseTargetToFollow();
-            lastPosOne = targetOneTrs.position;
-            lastPosTwo = targetTwoTrs.position;
-            oldCamPos = transform.position;
-            Vector3 targetpos = new Vector3(targetTrs.position.x, targetTrs.position.y + posY, -10);
-            transform.position = Vector3.Lerp(transform.position, targetpos, Time.deltaTime * smoothvalue);
-
-            if (!IsPositionValid())
-            {
-                transform.position = oldCamPos;
-            }
-
+            LerpCameraToTarget();
 
         }
 
-        //private Transform ChooseTargetToFollow(Transform tOne, Transform tTwo)
-        //{
+        private void LerpCameraToTarget()
+        {
+            targetTrs = targetSelector.ChooseTargetToFollow();
+            oldCamPos = transform.position;
+            Vector3 targetpos = new Vector3(targetTrs.position.x, targetTrs.position.y + posY, MIN_ZOOM_VALUE);
+            transform.position = Vector3.Lerp(transform.position, targetpos, Time.deltaTime * smoothvalue);
 
-        //    if (tOne.position != lastPosOne && tTwo.position != lastPosTwo)
-        //    {
-        //        return targetTrs;
-        //    }
-        //    else if (tOne.position != lastPosOne && tTwo.position == lastPosTwo)
-        //    {
-        //        return tOne;
-        //    }
-        //    else
-        //    {
-        //        return tTwo;
-        //    }
+            if (!IsCameraPosValid())
+            {
+                transform.position = oldCamPos;
+            }
+        }
 
-        //}
+
 
         /// <summary>
         /// Return true only if both player are inside screen bounds
         /// </summary>
         /// <returns></returns>
-        private bool IsPositionValid()
+        private bool IsCameraPosValid ()
         {
             if (targetTrs != targetOneTrs && ScreenBounds.OOB(targetOneTrs.position))
             {

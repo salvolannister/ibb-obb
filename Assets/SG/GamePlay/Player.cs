@@ -20,9 +20,9 @@ namespace Assets.SG.GamePlay
         private int enemyLayer;
         private bool isWalking;
 
-        public bool IsWalking()
+        public bool IsActive()
         {
-            return isWalking;
+            return isWalking || isJumping;
         }
         private void Start()
         {

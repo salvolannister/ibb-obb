@@ -232,9 +232,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ded491aa54297fe42a3ba0a73f85471f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionLayerMask:
+  layerMaskThatEndsJump:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 1792
   gravity: {x: 0, y: -9.8, z: 0}
   jumpKey: 273
   leftShiftKey: 276
@@ -2411,9 +2411,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ded491aa54297fe42a3ba0a73f85471f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionLayerMask:
+  layerMaskThatEndsJump:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 1792
   gravity: {x: 0, y: -9.8, z: 0}
   jumpKey: 119
   leftShiftKey: 97

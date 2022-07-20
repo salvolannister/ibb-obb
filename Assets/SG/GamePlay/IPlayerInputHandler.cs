@@ -3,6 +3,5 @@
     public interface IPlayerInputHandler
     {
         void HandleInput();
-        void Start();
     }
 }

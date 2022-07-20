@@ -7,7 +7,9 @@ using UnityEngine;
 
 namespace Assets.SG.GamePlay
 {
-    public partial class Player
+
+
+    public class PlayerMovementManager : MonoBehaviour, IPlayerMovement, IPlayerInputHandler
     {
         [Header("Set in inspector")]
         [SerializeField]
@@ -17,67 +19,97 @@ namespace Assets.SG.GamePlay
         [SerializeField]
         private KeyCode rightShiftKey = KeyCode.None;
 
-        private bool isJumping = false;
-        [SerializeField]
         private float moveSpeed = 0.5f;
         public float jumpForce = 5f;
+
+        private bool isJumping = false;
         private Vector3 lastDir = Vector3.zero;
         private bool isGrounded;
-        private void HandleInput()
+
+        private bool isWalking;
+        private Animator animator;
+        private Rigidbody rb;
+        private IPlayerGravityHandler gravityHandler;
+        public bool IsJumping { get => isJumping; set => isJumping = value; }
+        public bool IsWalking
         {
-              isWalking = false;
+
+            get
+            {
+
+                return isWalking;
+            }
+
+            set
+            {
+                isWalking = value;
+
+            }
+        }
+
+        public void HandleInput()
+        {
+            isWalking = false;
             if (Input.GetKey(leftShiftKey))
             {
                 Translate(Vector3.left);
                 isWalking = true;
+
             }
             else if (Input.GetKey(rightShiftKey))
             {
                 Translate(Vector3.right);
                 isWalking = true;
+
             }
-
-            int runAnim = isWalking? 1 : 0;
+            int runAnim = isWalking ? 1 : 0;
             animator.SetInteger("Run", runAnim);
-
-            if (Input.GetKeyDown(jumpKey) && !isJumping && isGrounded)
+            if (Input.GetKeyDown(jumpKey) && CanJump())
             {
                 Jump();
             }
         }
-        /// <summary>
-        /// Decelerates the player to prevent it going out of screen bounds
-        /// </summary>
-        public void HandleMaxYSpeed()
+
+
+
+
+
+        public void Start()
         {
-            if (Math.Abs(rb.velocity.y) > PlayerSettings.Y_VELOCITY_LIMIT)
-            {
-                rb.velocity *= PlayerSettings.VEL_DECELERATION_FACTOR;
-                rb.AddForce(-gravity * PlayerSettings.FORCE_DECELERATION_FACTOR, ForceMode.Impulse);
-            }
+            isGrounded = false;
+            animator = GetComponent<Animator>();
+            rb = GetComponent<Rigidbody>();
+            gravityHandler = GetComponent<IPlayerGravityHandler>();
         }
 
-        private void Jump()
+        public void Jump()
         {
             isGrounded = false;
             isJumping = true;
             animator.Play("Jump");
             rb.velocity = Vector3.zero;
-            rb.AddForce(jumpForce * -gravity, ForceMode.Impulse);
+            rb.AddForce(jumpForce * -gravityHandler.GetGravity(), ForceMode.Impulse);
 
         }
 
-        private void Translate(Vector3 direction)
+        public void Translate(Vector3 direction)
         {
+            if (direction == Vector3.zero)
+            {
+                isWalking = false;
+                return;
+            }
+            isWalking = true;
             lastDir = direction;
-            int gDir = IsReversed;
+            int gDir = gravityHandler.IsReversed;
             transform.rotation = Quaternion.LookRotation(direction, -Vector3.up * gDir);
             transform.transform.Translate(direction * moveSpeed * Time.deltaTime, 0);
         }
 
-        private void FlipPlayer()
+        public void FlipPlayer()
         {
-            int gravityDir = IsReversed;
+            int gravityDir = gravityHandler.IsReversed;
+            bool reversed = gravityDir == 1;
             if (lastDir == Vector3.right)
             {
                 transform.rotation = Quaternion.LookRotation(
@@ -90,13 +122,24 @@ namespace Assets.SG.GamePlay
             }
         }
 
-        private void EndJump()
+        void IPlayerMovement.EndJump()
         {
             isGrounded = true;
-            if (isJumping)
+            if (IsJumping)
             {
-                isJumping = false;
+                IsJumping = false;
             }
         }
+
+        public bool IsMoving()
+        {
+            return IsJumping || isWalking;
+        }
+
+        public bool CanJump()
+        {
+            return !IsJumping && isGrounded;
+        }
+
     }
 }

@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
+
 
 namespace Assets.SG.GamePlay
 {
-    public partial class Player
+    public class PlayerGravityHandler : MonoBehaviour, IPlayerGravityHandler
     {
-
+        public Rigidbody rb;
+        public IPlayerMovement playerMovement;
         [SerializeField]
         private Vector3 gravity = new Vector3(0, -9.8f, 0);
         private const float gravityChangeDelay = 0.5f; // 0.05f;
         private bool reversed = false;
         private Coroutine co = null;
+
         public int IsReversed
         {
             get
@@ -33,11 +32,23 @@ namespace Assets.SG.GamePlay
         private IEnumerator ReverseGravityCo()
         {
             reversed = !reversed;
-            FlipPlayer();
+            playerMovement.FlipPlayer();
 
             yield return new WaitForSeconds(gravityChangeDelay);
             gravity *= -1;
             co = null;
+        }
+
+        public void Start()
+        {
+            rb = GetComponent<Rigidbody>();
+            playerMovement = GetComponent<IPlayerMovement>();
+        }
+
+        public void AddGravity()
+        {
+            rb.AddForce(gravity, ForceMode.Acceleration);
+
         }
 
         /// <summary>
@@ -45,9 +56,9 @@ namespace Assets.SG.GamePlay
         /// otherwise changes it
         /// </summary>
         /// <param name="reverse"></param>
-        private void SetAndCheckReversedStatus(bool reverse)
+        public void SetAndCheckReversedStatus(bool reverse)
         {
-            
+
             if (reverse)
             {
                 reversed = reverse;
@@ -62,5 +73,21 @@ namespace Assets.SG.GamePlay
             }
         }
 
+        /// <summary>
+        /// Decelerates the player to prevent it going out of screen bounds
+        /// </summary>
+        public void HandleMaxYSpeed()
+        {
+            if (Math.Abs(rb.velocity.y) > PlayerSettings.Y_VELOCITY_LIMIT)
+            {
+                rb.velocity *= PlayerSettings.VEL_DECELERATION_FACTOR;
+                rb.AddForce(-gravity * PlayerSettings.FORCE_DECELERATION_FACTOR, ForceMode.Impulse);
+            }
+        }
+
+        public Vector3 GetGravity()
+        {
+            return gravity;
+        }
     }
 }

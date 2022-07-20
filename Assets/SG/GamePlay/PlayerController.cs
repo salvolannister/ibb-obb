@@ -19,11 +19,8 @@ namespace Assets.SG.GamePlay
 
         [Tooltip("Layers that the player will collide with")]
         public LayerMask layerMaskThatEndsJump;
-        private Rigidbody rb;
-        private Animator animator;
         private Coroutine co;
         private int enemyLayer;
-        private bool isWalking;
         private IPlayerMovement playerMovement;
         private IPlayerInputHandler playerInputHandler;
         private IPlayerGravityHandler playerGravityHandler;
@@ -40,8 +37,7 @@ namespace Assets.SG.GamePlay
             playerMovement = GetComponent<IPlayerMovement>();
             playerInputHandler = GetComponent<IPlayerInputHandler>();
             playerGravityHandler = GetComponent<IPlayerGravityHandler>();
-            rb = GetComponent<Rigidbody>();
-            animator = GetComponent<Animator>();
+        
             
         }
 

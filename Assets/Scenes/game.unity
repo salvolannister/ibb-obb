@@ -229,18 +229,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 132857016}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ded491aa54297fe42a3ba0a73f85471f, type: 3}
+  m_Script: {fileID: 11500000, guid: ac3157ef51b7dee4a89699e580eabc76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layerMaskThatEndsJump:
-    serializedVersion: 2
-    m_Bits: 1792
-  gravity: {x: 0, y: -9.8, z: 0}
   jumpKey: 273
   leftShiftKey: 276
   rightShiftKey: 275
-  moveSpeed: 2
-  jumpForce: 0.7
+  jumpForce: 5
 --- !u!54 &132857018
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -257,6 +252,35 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 88
   m_CollisionDetection: 0
+--- !u!114 &132857019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132857016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e47b12f6afca224ea5e09deac98e65c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 0}
+  gravity: {x: 0, y: -9.8, z: 0}
+--- !u!114 &132857020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132857016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e14243473f480ac4f9726739da9afb6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerMaskThatEndsJump:
+    serializedVersion: 2
+    m_Bits: 768
 --- !u!65 &132857022
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -755,8 +779,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   players:
+  - {fileID: 132857020}
   - {fileID: 1910169726}
-  - {fileID: 132857017}
   checkPoints: []
 --- !u!114 &786672380
 MonoBehaviour:
@@ -786,7 +810,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c1b2bf7535552147906438d84853d90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  plOne: {fileID: 132857017}
+  plOne: {fileID: 132857020}
   plTwo: {fileID: 1910169726}
 --- !u!20 &786672382
 Camera:
@@ -2414,6 +2438,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 88
   m_CollisionDetection: 0
+--- !u!114 &1910169724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1910169722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac3157ef51b7dee4a89699e580eabc76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpKey: 32
+  leftShiftKey: 100
+  rightShiftKey: 97
+  jumpForce: 5
+--- !u!114 &1910169725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1910169722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e47b12f6afca224ea5e09deac98e65c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 1910169723}
+  gravity: {x: 0, y: -9.8, z: 0}
 --- !u!114 &1910169726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2423,18 +2477,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1910169722}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ded491aa54297fe42a3ba0a73f85471f, type: 3}
+  m_Script: {fileID: 11500000, guid: e14243473f480ac4f9726739da9afb6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   layerMaskThatEndsJump:
     serializedVersion: 2
-    m_Bits: 1792
-  gravity: {x: 0, y: -9.8, z: 0}
-  jumpKey: 119
-  leftShiftKey: 97
-  rightShiftKey: 100
-  moveSpeed: 2
-  jumpForce: 0.7
+    m_Bits: 768
 --- !u!65 &1910169727
 BoxCollider:
   m_ObjectHideFlags: 0

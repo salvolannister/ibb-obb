@@ -7,42 +7,53 @@ using UnityEngine.Assertions;
 
 namespace Assets.SG.GamePlay
 {
+
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(BoxCollider))]
     [RequireComponent(typeof(Animator))]
-    public partial class Player : MonoBehaviour
+    // handle gravity, delegates input, enemy interactions and life and death
+
+    // Delegates other script to act in its order
+    public class PlayerController : MonoBehaviour
     {
 
         [Tooltip("Layers that the player will collide with")]
         public LayerMask layerMaskThatEndsJump;
         private Rigidbody rb;
         private Animator animator;
+        private Coroutine co;
         private int enemyLayer;
         private bool isWalking;
+        private IPlayerMovement playerMovement;
+        private IPlayerInputHandler playerInputHandler;
+        private IPlayerGravityHandler playerGravityHandler;
+
 
         public bool IsActive()
         {
-            return isWalking || isJumping;
+            return playerMovement.IsMoving();
         }
         private void Start()
         {
             co = null;
             enemyLayer = LayerMask.NameToLayer("Enemy");
-
+            playerMovement = GetComponent<IPlayerMovement>();
+            playerInputHandler = GetComponent<IPlayerInputHandler>();
+            playerGravityHandler = GetComponent<IPlayerGravityHandler>();
             rb = GetComponent<Rigidbody>();
             animator = GetComponent<Animator>();
-            isGrounded = false;
+            
         }
 
         private void Update()
         {
-            HandleInput();
+            playerInputHandler.HandleInput();
 
         }
 
         private void FixedUpdate()
         {
-            rb.AddForce(gravity, ForceMode.Acceleration);
+            playerGravityHandler.AddGravity();
         }
 
         private void OnCollisionEnter(Collision coll)
@@ -52,12 +63,13 @@ namespace Assets.SG.GamePlay
 
             if ((layerMaskThatEndsJump & layerMask2) != 0)
             {
-                EndJump();
+                playerMovement.EndJump();
             }
 
         }
 
-        
+
+        #region Enemy
         private void OnTriggerEnter(Collider other)
         {
             int goLayer = other.gameObject.layer;
@@ -101,7 +113,7 @@ namespace Assets.SG.GamePlay
             gameObject.SetActive(false);
 
         }
-       
+
         public void Respawn(Transform checkPointTrs)
         {
             transform.position = checkPointTrs.position;
@@ -109,19 +121,19 @@ namespace Assets.SG.GamePlay
 
             if ((checkPointTrs.parent.gameObject.CompareTag("UnderWorld")))
             {
-                SetAndCheckReversedStatus(true);
+                playerGravityHandler.SetAndCheckReversedStatus(true);
 
             }
             else
             {
-                SetAndCheckReversedStatus(false);
+                playerGravityHandler.SetAndCheckReversedStatus(false);
             }
 
-            FlipPlayer();
+            playerMovement.FlipPlayer();
         }
-      
+        #endregion
 
-       
+
 
     }
 }

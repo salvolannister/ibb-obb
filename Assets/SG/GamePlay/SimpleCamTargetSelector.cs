@@ -5,8 +5,8 @@ namespace Assets.SG.GamePlay
 {
     public class SimpleCamTargetSelector : MonoBehaviour, ICamTargetSelector
     {
-        public Player plOne;
-        public Player plTwo;
+        public PlayerController plOne;
+        public PlayerController plTwo;
 
         private Transform tOne;
         private Transform tTwo;

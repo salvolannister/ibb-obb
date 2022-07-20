@@ -10,27 +10,26 @@ namespace Assets.SG.GamePlay
     /// </summary>
     public class Portal : MonoBehaviour
     {
-     
+
         void OnTriggerEnter(Collider other)
         {
-           
-                Player pl = other.gameObject.GetComponent<Player>();
-                if (pl != null)
-                {
-                    pl.ReverseGravity();
-                }
-            
+
+            IPlayerGravityHandler pl = other.gameObject.GetComponent<IPlayerGravityHandler>();
+            if (pl != null)
+            {
+                pl.ReverseGravity();
+            }
+
         }
 
         private void OnTriggerExit(Collider other)
         {
-          
-                Player pl = other.gameObject.GetComponent<Player>();
-                if (pl != null)
-                {
-                    pl.HandleMaxYSpeed();
-                }
-            
+
+            IPlayerGravityHandler pl = other.gameObject.GetComponent<IPlayerGravityHandler>();
+            {
+                pl.HandleMaxYSpeed();
+            }
+
 
         }
     }

@@ -9,7 +9,7 @@ using UnityEngine.Assertions;
 public class GameManager : Manager<GameManager>
 {
     [Header("Set in inspector")]
-    public Player[] players = new Player[2];
+    public PlayerController[] players = new PlayerController[2];
 
     private List<Enemy> deadEnemyList = new List<Enemy>();
     [Header("Set Dynamically")]
@@ -20,7 +20,7 @@ public class GameManager : Manager<GameManager>
     {
         checkPoints = new Transform[2];
 
-        Assert.IsNotNull(players[1], "Second Player not set in the editor");
+        Assert.IsNotNull(players[1], "Second PlayerMovementManager not set in the editor");
         Assert.IsNotNull(players[0], "First p not set in the editor");
     }
 
@@ -39,8 +39,8 @@ public class GameManager : Manager<GameManager>
     public static void GameOver(string deadTag)
     {
         GameManager M = Get();
-        Player playerOne = M.players[0];
-        Player playerTwo = M.players[1];
+        PlayerController playerOne = M.players[0];
+        PlayerController playerTwo = M.players[1];
         if (playerOne.tag == deadTag)
         {
             playerOne.Die(() => playerTwo.Die());

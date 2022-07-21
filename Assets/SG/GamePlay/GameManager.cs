@@ -20,8 +20,8 @@ public class GameManager : Manager<GameManager>
     {
         checkPoints = new Transform[2];
 
-        Assert.IsNotNull(players[1], "Second PlayerMovementManager not set in the editor");
-        Assert.IsNotNull(players[0], "First p not set in the editor");
+        Assert.IsNotNull(players[0], "First player not set in the editor");
+        Assert.IsNotNull(players[1], "Second PlayerController not set in the editor");
     }
 
     public static void CheckPointReached(Transform pos1, Transform pos2)

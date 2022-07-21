@@ -19,6 +19,7 @@ namespace Assets.SG.GamePlay
         [SerializeField]
         private KeyCode rightShiftKey = KeyCode.None;
 
+        [SerializeField]
         private float moveSpeed = 0.5f;
         public float jumpForce = 5f;
 

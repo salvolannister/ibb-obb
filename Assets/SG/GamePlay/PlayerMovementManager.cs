@@ -31,6 +31,8 @@ namespace Assets.SG.GamePlay
         private Animator animator;
         private Rigidbody rb;
         private IPlayerGravityHandler gravityHandler;
+        private float currentSpeed = 0;
+        public float maxSpeed = 5;
         public bool IsJumping { get => isJumping; set => isJumping = value; }
         public bool IsWalking
         {
@@ -95,16 +97,25 @@ namespace Assets.SG.GamePlay
 
         public void Translate(Vector3 direction)
         {
+            if(lastDir != direction)
+            {
+                currentSpeed = 0;
+            }
+
+            lastDir = direction;
             if (direction == Vector3.zero)
             {
                 isWalking = false;
                 return;
             }
+
             isWalking = true;
-            lastDir = direction;
             int gDir = gravityHandler.IsReversed;
             transform.rotation = Quaternion.LookRotation(direction, -Vector3.up * gDir);
-            transform.transform.Translate(direction * moveSpeed * Time.deltaTime, 0);
+            currentSpeed += moveSpeed * Time.deltaTime;
+            currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
+            rb.velocity = new Vector3(direction.x * currentSpeed, rb.velocity.y);
+            //transform.transform.Translate(direction * moveSpeed * Time.deltaTime, 0);
         }
 
         public void FlipPlayer()

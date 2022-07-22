@@ -108,6 +108,7 @@ namespace Assets.SG.GamePlay
                 isWalking = false;
                 return;
             }
+         
 
             isWalking = true;
             int gDir = gravityHandler.IsReversed;

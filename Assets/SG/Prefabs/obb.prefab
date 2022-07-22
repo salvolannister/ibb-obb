@@ -880,8 +880,9 @@ MonoBehaviour:
   jumpKey: 119
   leftShiftKey: 97
   rightShiftKey: 100
-  moveSpeed: 2
+  moveSpeed: 5
   jumpForce: 0.6
+  maxSpeed: 7
 --- !u!114 &8624883697150236762
 MonoBehaviour:
   m_ObjectHideFlags: 0

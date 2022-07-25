@@ -32,6 +32,7 @@ namespace Assets.SG.GamePlay
         private Rigidbody rb;
         private IPlayerGravityHandler gravityHandler;
         private float currentSpeed = 0;
+        private Vector3 direction;
         public float maxSpeed = 5;
         public bool IsJumping { get => isJumping; set => isJumping = value; }
         public bool IsWalking
@@ -55,15 +56,20 @@ namespace Assets.SG.GamePlay
             isWalking = false;
             if (Input.GetKey(leftShiftKey))
             {
-                Translate(Vector3.left);
+               direction = Vector3.left;
                 isWalking = true;
 
             }
             else if (Input.GetKey(rightShiftKey))
             {
-                Translate(Vector3.right);
+                direction = Vector3.right;
                 isWalking = true;
 
+            }
+            else
+            {
+                direction = Vector3.zero;
+                
             }
             int runAnim = isWalking ? 1 : 0;
             animator.SetInteger("Run", runAnim);
@@ -73,9 +79,16 @@ namespace Assets.SG.GamePlay
             }
         }
 
+       void Update()
+        {
+            int gDir = gravityHandler.IsReversed;
+            transform.rotation = Quaternion.LookRotation(direction, -Vector3.up * gDir);
+        }
 
-
-
+        public void FixedUpdate()
+        {
+            Translate(direction);
+        }
 
         public void Start()
         {
@@ -90,14 +103,13 @@ namespace Assets.SG.GamePlay
             isGrounded = false;
             isJumping = true;
             animator.Play("Jump");
-            rb.velocity = Vector3.zero;
-            rb.AddForce(jumpForce * -gravityHandler.GetGravity(), ForceMode.Impulse);
+            rb.velocity = new Vector3(rb.velocity.x, -jumpForce * gravityHandler.IsReversed);
 
         }
 
         public void Translate(Vector3 direction)
         {
-            if(lastDir != direction)
+            if (lastDir != direction)
             {
                 currentSpeed = 0;
             }
@@ -108,15 +120,16 @@ namespace Assets.SG.GamePlay
                 isWalking = false;
                 return;
             }
-         
+
 
             isWalking = true;
-            int gDir = gravityHandler.IsReversed;
-            transform.rotation = Quaternion.LookRotation(direction, -Vector3.up * gDir);
+           
             currentSpeed += moveSpeed * Time.deltaTime;
             currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
-            rb.velocity = new Vector3(direction.x * currentSpeed, rb.velocity.y);
-            //transform.transform.Translate(direction * moveSpeed * Time.deltaTime, 0);
+            Debug.Log($" Max speed is {currentSpeed}");
+            Vector3 targetVelocity = new Vector3(direction.x * currentSpeed, rb.velocity.y);
+            rb.velocity = targetVelocity;
+            Debug.Log($" speed on x axis is {targetVelocity.x} and y: {targetVelocity.y}");
         }
 
         public void FlipPlayer()

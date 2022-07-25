@@ -1858,27 +1858,27 @@ PrefabInstance:
     - target: {fileID: 2363574501848867104, guid: 495163ec18e27a54eaf8e22580acc58e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.2039995
+      value: -3.205997
       objectReference: {fileID: 0}
     - target: {fileID: 2363574501848867104, guid: 495163ec18e27a54eaf8e22580acc58e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.098
+      value: 0.09799999
       objectReference: {fileID: 0}
     - target: {fileID: 2363574501848867104, guid: 495163ec18e27a54eaf8e22580acc58e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.020556133
       objectReference: {fileID: 0}
     - target: {fileID: 2363574501848867104, guid: 495163ec18e27a54eaf8e22580acc58e,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2363574501848867104, guid: 495163ec18e27a54eaf8e22580acc58e,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 2363574501848867104, guid: 495163ec18e27a54eaf8e22580acc58e,
         type: 3}
@@ -1888,7 +1888,7 @@ PrefabInstance:
     - target: {fileID: 2363574501848867104, guid: 495163ec18e27a54eaf8e22580acc58e,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 2363574501848867104, guid: 495163ec18e27a54eaf8e22580acc58e,
         type: 3}
@@ -1903,7 +1903,7 @@ PrefabInstance:
     - target: {fileID: 2363574501848867104, guid: 495163ec18e27a54eaf8e22580acc58e,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -270
       objectReference: {fileID: 0}
     - target: {fileID: 2363574501848867104, guid: 495163ec18e27a54eaf8e22580acc58e,
         type: 3}
@@ -1925,6 +1925,12 @@ PrefabInstance:
       propertyPath: jumpForce
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2363574502056649543, guid: 495163ec18e27a54eaf8e22580acc58e,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: c8c4ca031749ea345b0c8fb24e5f4967,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 495163ec18e27a54eaf8e22580acc58e, type: 3}
 --- !u!199 &2500595676462565259
@@ -6919,12 +6925,12 @@ PrefabInstance:
     - target: {fileID: 8624883696866624776, guid: 9f8bd0aa5ad07d64687019fb0fdc2787,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8624883696866624776, guid: 9f8bd0aa5ad07d64687019fb0fdc2787,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 8624883696866624776, guid: 9f8bd0aa5ad07d64687019fb0fdc2787,
         type: 3}
@@ -6934,7 +6940,7 @@ PrefabInstance:
     - target: {fileID: 8624883696866624776, guid: 9f8bd0aa5ad07d64687019fb0fdc2787,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 8624883696866624776, guid: 9f8bd0aa5ad07d64687019fb0fdc2787,
         type: 3}
@@ -6949,7 +6955,7 @@ PrefabInstance:
     - target: {fileID: 8624883696866624776, guid: 9f8bd0aa5ad07d64687019fb0fdc2787,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -270
       objectReference: {fileID: 0}
     - target: {fileID: 8624883696866624776, guid: 9f8bd0aa5ad07d64687019fb0fdc2787,
         type: 3}
@@ -6961,6 +6967,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: obb
       objectReference: {fileID: 0}
+    - target: {fileID: 8624883697150236760, guid: 9f8bd0aa5ad07d64687019fb0fdc2787,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: c8c4ca031749ea345b0c8fb24e5f4967,
+        type: 2}
     - target: {fileID: 8624883697150236763, guid: 9f8bd0aa5ad07d64687019fb0fdc2787,
         type: 3}
       propertyPath: maxSpeed

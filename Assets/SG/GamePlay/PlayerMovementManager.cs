@@ -51,12 +51,18 @@ namespace Assets.SG.GamePlay
             }
         }
 
+        public bool InPortal { get => inPortal; set => inPortal = value; }
+
+        private bool inPortal;
+
+
         public void HandleInput()
         {
             isWalking = false;
+            lastDir = direction;
             if (Input.GetKey(leftShiftKey))
             {
-               direction = Vector3.left;
+                direction = Vector3.left;
                 isWalking = true;
 
             }
@@ -69,7 +75,7 @@ namespace Assets.SG.GamePlay
             else
             {
                 direction = Vector3.zero;
-                
+
             }
             int runAnim = isWalking ? 1 : 0;
             animator.SetInteger("Run", runAnim);
@@ -79,10 +85,12 @@ namespace Assets.SG.GamePlay
             }
         }
 
-       void Update()
+        void Update()
         {
             int gDir = gravityHandler.IsReversed;
-            transform.rotation = Quaternion.LookRotation(direction, -Vector3.up * gDir);
+            if (direction != Vector3.zero)
+                transform.rotation = Quaternion.LookRotation(direction, -Vector3.up * gDir);
+
         }
 
         public void FixedUpdate()
@@ -114,7 +122,6 @@ namespace Assets.SG.GamePlay
                 currentSpeed = 0;
             }
 
-            lastDir = direction;
             if (direction == Vector3.zero)
             {
                 isWalking = false;
@@ -123,13 +130,11 @@ namespace Assets.SG.GamePlay
 
 
             isWalking = true;
-           
+
             currentSpeed += moveSpeed * Time.deltaTime;
             currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
-            Debug.Log($" Max speed is {currentSpeed}");
             Vector3 targetVelocity = new Vector3(direction.x * currentSpeed, rb.velocity.y);
             rb.velocity = targetVelocity;
-            Debug.Log($" speed on x axis is {targetVelocity.x} and y: {targetVelocity.y}");
         }
 
         public void FlipPlayer()

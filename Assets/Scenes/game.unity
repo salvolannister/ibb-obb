@@ -2010,12 +2010,12 @@ PrefabInstance:
     - target: {fileID: 2363574502056649536, guid: 495163ec18e27a54eaf8e22580acc58e,
         type: 3}
       propertyPath: moveSpeed
-      value: 5.5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2363574502056649536, guid: 495163ec18e27a54eaf8e22580acc58e,
         type: 3}
       propertyPath: jumpForce
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2363574502056649543, guid: 495163ec18e27a54eaf8e22580acc58e,
         type: 3}
@@ -7073,12 +7073,12 @@ PrefabInstance:
     - target: {fileID: 8624883697150236763, guid: 9f8bd0aa5ad07d64687019fb0fdc2787,
         type: 3}
       propertyPath: moveSpeed
-      value: 5.5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8624883697150236763, guid: 9f8bd0aa5ad07d64687019fb0fdc2787,
         type: 3}
       propertyPath: jumpForce
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f8bd0aa5ad07d64687019fb0fdc2787, type: 3}

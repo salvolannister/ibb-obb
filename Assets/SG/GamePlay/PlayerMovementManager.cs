@@ -117,7 +117,7 @@ namespace Assets.SG.GamePlay
 
         public void Translate(Vector3 direction)
         {
-            if (lastDir != direction)
+            if (lastDir != direction && (lastDir == Vector3.left || lastDir == Vector3.right))
             {
                 currentSpeed = 0;
             }
@@ -125,6 +125,8 @@ namespace Assets.SG.GamePlay
             if (direction == Vector3.zero)
             {
                 isWalking = false;
+                Debug.Log(rb.velocity);
+                Decelerate();
                 return;
             }
 
@@ -135,6 +137,19 @@ namespace Assets.SG.GamePlay
             currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
             Vector3 targetVelocity = new Vector3(direction.x * currentSpeed, rb.velocity.y);
             rb.velocity = targetVelocity;
+        }
+
+        public void Decelerate()
+        {
+            if (rb.velocity.x != 0)
+            {
+
+                float velocityDir = Mathf.Sign(rb.velocity.x);
+                currentSpeed -= moveSpeed * Time.deltaTime;
+                currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
+                Vector3 targetVelocity = new Vector3(velocityDir * currentSpeed, rb.velocity.y);
+                rb.velocity = targetVelocity;
+            }
         }
 
         public void FlipPlayer()

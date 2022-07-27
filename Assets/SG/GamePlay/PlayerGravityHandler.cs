@@ -48,6 +48,7 @@ namespace Assets.SG.GamePlay
         public void AddGravity()
         {
             rb.AddForce(gravity, ForceMode.Acceleration);
+            
 
         }
 

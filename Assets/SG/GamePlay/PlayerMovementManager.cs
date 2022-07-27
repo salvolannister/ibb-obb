@@ -33,6 +33,7 @@ namespace Assets.SG.GamePlay
         private IPlayerGravityHandler gravityHandler;
         private float currentSpeed = 0;
         private Vector3 direction;
+        private Vector3 dirBeforeStop;
         public float maxSpeed = 5;
         public bool IsJumping { get => isJumping; set => isJumping = value; }
         public bool IsWalking
@@ -59,6 +60,12 @@ namespace Assets.SG.GamePlay
         public void HandleInput()
         {
             isWalking = false;
+            if (direction == Vector3.zero && lastDir != Vector3.zero)
+            {
+                dirBeforeStop = lastDir;
+                Debug.Log(" dir before stop " + dirBeforeStop.ToString());
+            }
+
             lastDir = direction;
             if (Input.GetKey(leftShiftKey))
             {
@@ -85,16 +92,25 @@ namespace Assets.SG.GamePlay
             }
         }
 
-        void Update()
+
+
+        public void FlipPlayer()
         {
             int gDir = gravityHandler.IsReversed;
             if (direction != Vector3.zero)
-                transform.rotation = Quaternion.LookRotation(direction, -Vector3.up * gDir);
+            {
 
+                transform.rotation = Quaternion.LookRotation(direction, -Vector3.up * gDir);
+            }
+            else
+            {
+                transform.rotation = Quaternion.LookRotation(dirBeforeStop, -Vector3.up * gDir);
+            }
         }
 
         public void FixedUpdate()
         {
+            FlipPlayer();
             Translate(direction);
         }
 
@@ -125,7 +141,6 @@ namespace Assets.SG.GamePlay
             if (direction == Vector3.zero)
             {
                 isWalking = false;
-                Debug.Log(rb.velocity);
                 Decelerate();
                 return;
             }
@@ -152,21 +167,7 @@ namespace Assets.SG.GamePlay
             }
         }
 
-        public void FlipPlayer()
-        {
-            int gravityDir = gravityHandler.IsReversed;
-            bool reversed = gravityDir == 1;
-            if (lastDir == Vector3.right)
-            {
-                transform.rotation = Quaternion.LookRotation(
-                    (reversed) ? Vector3.back : Vector3.forward, -Vector3.up * gravityDir);
-            }
-            else if (lastDir == Vector3.left)
-            {
-                transform.rotation = Quaternion.LookRotation(
-                    (reversed) ? Vector3.forward : Vector3.back, -Vector3.up * gravityDir);
-            }
-        }
+
 
         void IPlayerMovement.EndJump()
         {

@@ -102,9 +102,13 @@ namespace Assets.SG.GamePlay
 
                 transform.rotation = Quaternion.LookRotation(direction, -Vector3.up * gDir);
             }
-            else
+            else if( dirBeforeStop != Vector3.zero )
             {
                 transform.rotation = Quaternion.LookRotation(dirBeforeStop, -Vector3.up * gDir);
+            }
+            else
+            {
+                Debug.Log("dir before stop" + dirBeforeStop);
             }
         }
 
@@ -120,6 +124,7 @@ namespace Assets.SG.GamePlay
             animator = GetComponent<Animator>();
             rb = GetComponent<Rigidbody>();
             gravityHandler = GetComponent<IPlayerGravityHandler>();
+            dirBeforeStop = Vector3.right;
         }
 
         public void Jump()

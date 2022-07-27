@@ -63,7 +63,6 @@ namespace Assets.SG.GamePlay
             if (direction == Vector3.zero && lastDir != Vector3.zero)
             {
                 dirBeforeStop = lastDir;
-                Debug.Log(" dir before stop " + dirBeforeStop.ToString());
             }
 
             lastDir = direction;

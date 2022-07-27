@@ -32,7 +32,6 @@ namespace Assets.SG.GamePlay
         private IEnumerator ReverseGravityCo()
         {
             reversed = !reversed;
-            playerMovement.FlipPlayer();
 
             yield return new WaitForSeconds(gravityChangeDelay);
             gravity *= -1;

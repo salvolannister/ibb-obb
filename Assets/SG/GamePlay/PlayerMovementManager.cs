@@ -101,7 +101,7 @@ namespace Assets.SG.GamePlay
 
                 transform.rotation = Quaternion.LookRotation(direction, -Vector3.up * gDir);
             }
-            else if( dirBeforeStop != Vector3.zero )
+            else if (dirBeforeStop != Vector3.zero)
             {
                 transform.rotation = Quaternion.LookRotation(dirBeforeStop, -Vector3.up * gDir);
             }
@@ -160,14 +160,16 @@ namespace Assets.SG.GamePlay
 
         public void Decelerate()
         {
-            if (rb.velocity.x != 0)
+            Debug.Log("rb velocity " + rb.velocity.x);
+            if (currentSpeed != 0)
             {
 
                 float velocityDir = Mathf.Sign(rb.velocity.x);
                 currentSpeed -= moveSpeed * Time.deltaTime;
                 currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
-                Vector3 targetVelocity = new Vector3(velocityDir * currentSpeed, rb.velocity.y);
+                Vector3 targetVelocity = new Vector3(dirBeforeStop.x * currentSpeed, rb.velocity.y);
                 rb.velocity = targetVelocity;
+                
             }
         }
 

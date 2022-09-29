@@ -15,11 +15,16 @@ namespace Assets.SG.GamePlay
         private bool reversed = false;
         private Coroutine co = null;
 
+        public enum gravityValues
+        {
+            normal = -1,
+            reversed = 1
+        }
         public int IsReversed
         {
             get
             {
-                return reversed ? 1 : -1;
+                return reversed ? ((int)gravityValues.reversed) : ((int)gravityValues.normal);
             }
         }
 
